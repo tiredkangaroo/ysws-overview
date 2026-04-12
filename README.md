@@ -9,5 +9,6 @@ it's a service (i have it running on my mac) to automatically refresh the ysws p
 this is the data i can get my hands on. if you've got suggestions on how to make this data better (or anything else about this), dm me (@aj) on the slack or email me.
 
 # things that could be better
-- in the scenario where a YSWS gets more money than is needed, and the rest is taken back by hq/a gappie (for their YSWS fund), it still counts as part of the total expenses (raised - balance) so it could lead to some things reporting more spending than they've actually spent. you could do this by ignoring transfers to hack_club_hq (category) hcb accounts.
+- in the scenario where a YSWS gets more money than is needed, and the rest is taken back by hq/a gappie (for their YSWS fund), it still counts as part of the total expenses (raised - balance) so it could lead to some things reporting more spending than they've actually spent. you could do this by ignoring transfers to hack_club_hq (category) hcb accounts. a warning before just ignoring all transfers: i think the shipwrecked hcb had to transfer to hq as part of island costs (and that's obviously not the same as unspent money, i think i might have to hardcode that though? maybe check if the transfer is named but that doesn't mean much).
 - obv some of the data is just bad but this is just what i can get my hands on
+- some projects just haven't made it to unified yet
