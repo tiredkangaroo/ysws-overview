@@ -1,0 +1,654 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ysws & projects</title>
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family:
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          Roboto,
+          sans-serif;
+	min-width: 67vw;
+        width: fit-content;
+        max-width: 90vw;
+        margin: 0 auto;
+        padding: 40px 24px 80px;
+        background: #f7f6f3;
+        color: #1a1a1a;
+        line-height: 1.5;
+      }
+
+      h1 {
+        font-size: 24px;
+        font-weight: 600;
+        margin: 0 0 4px;
+        color: #111;
+      }
+
+      h2 {
+        font-size: 20px;
+        font-weight: 600;
+        margin: 0 0 4px;
+        color: #111;
+      }
+
+      .page-header {
+        margin-bottom: 28px;
+        border-bottom: 1px solid #e0ddd6;
+        padding-bottom: 16px;
+      }
+
+      .page-header p {
+        margin: 0;
+        color: #666;
+        font-size: 14px;
+      }
+
+      a {
+        color: #2563eb;
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+
+      /* Tables */
+      .table-wrap {
+        background: #fff;
+        border: 1px solid #e0ddd6;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 14px;
+      }
+
+      th,
+      td {
+        text-align: left;
+        padding: 11px 16px;
+        border-bottom: 1px solid #ede9e2;
+      }
+
+      thead th {
+        background: #f2f0eb;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #555;
+        border-bottom: 1px solid #ddd9d0;
+      }
+
+      tbody tr:last-child td {
+        border-bottom: none;
+      }
+
+      tbody tr:hover {
+        background: #faf9f6;
+      }
+
+      .ysws-row {
+        cursor: pointer;
+      }
+      .ysws-row td:first-child {
+        color: #2563eb;
+        font-weight: 500;
+      }
+
+      /* Sortable */
+      th.sortable {
+        cursor: pointer;
+        user-select: none;
+        white-space: nowrap;
+      }
+      th.sortable:hover {
+        background: #e8e4dd;
+      }
+      th.sortable::after {
+        content: " ⇅";
+        font-size: 10px;
+        color: #aaa;
+      }
+      th.sort-asc::after {
+        content: " ▲";
+        color: #444;
+      }
+      th.sort-desc::after {
+        content: " ▼";
+        color: #444;
+      }
+
+      /* Stat cards */
+      .finance-cards {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin: 0 0 24px;
+      }
+
+      .stat-card {
+        background: #fff;
+        border: 1px solid #e0ddd6;
+        border-radius: 8px;
+        padding: 14px 20px;
+        min-width: 130px;
+      }
+
+      .stat-card .label {
+        font-size: 11px;
+        color: #888;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        margin-bottom: 6px;
+      }
+
+      .stat-card .value {
+        font-size: 22px;
+        font-weight: 600;
+        color: #111;
+      }
+
+      .stat-card .value.spent {
+        color: #b94040;
+      }
+      .stat-card .value.na {
+        color: #aaa;
+        font-size: 14px;
+        font-weight: 400;
+      }
+
+      /* Money column */
+      td.money,
+      th.money {
+        text-align: right;
+        font-variant-numeric: tabular-nums;
+      }
+
+      /* Cost badges */
+      .cost-green {
+        color: #1a6e35;
+        background: #d6f0df;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 13px;
+        font-weight: 500;
+        display: inline-block;
+      }
+      .cost-yellow {
+        color: #7a5800;
+        background: #fef0c0;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 13px;
+        font-weight: 500;
+        display: inline-block;
+      }
+      .cost-red {
+        color: #922;
+        background: #fde8e8;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 13px;
+        font-weight: 500;
+        display: inline-block;
+      }
+      .cost-na {
+        color: #888;
+        font-size: 13px;
+      }
+
+      /* Back button */
+      .back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 20px;
+        padding: 7px 14px;
+        background: #fff;
+        border: 1px solid #ddd9d0;
+        border-radius: 6px;
+        font-size: 13px;
+        font-weight: 500;
+        color: #333;
+        cursor: pointer;
+        transition: background 0.15s;
+      }
+      .back-btn:hover {
+        background: #f2f0eb;
+      }
+
+      /* Screenshot */
+      .project-screenshot {
+        max-width: 180px;
+        max-height: 120px;
+        display: block;
+        border-radius: 4px;
+        border: 1px solid #e0ddd6;
+      }
+
+      /* Status / error */
+      #status {
+        color: #888;
+        font-size: 14px;
+        margin: 40px 0;
+      }
+      .error {
+        color: #b94040;
+      }
+
+      #list-view,
+      #detail-view {
+        display: none;
+      }
+      #list-view.active,
+      #detail-view.active {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page-header">
+      <h1>ysws & projects</h1>
+      <p id="status">Loading...</p>
+    </div>
+
+    <div id="list-view">
+      <div class="table-wrap">
+        <table id="ysws-table">
+          <thead>
+            <tr>
+              <th>YSWS Name</th>
+              <th class="sortable" data-col="1" data-dir="none">Ships</th>
+              <th class="sortable" data-col="2" data-dir="none">
+                Weighted Grants
+              </th>
+              <th class="sortable money" data-col="3" data-dir="none">
+                Spent / WG
+              </th>
+            </tr>
+          </thead>
+          <tbody id="ysws-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="detail-view">
+      <button class="back-btn" onclick="showList()">
+        ← Back to all YSWSes
+      </button>
+      <h2 id="detail-title" style="margin-bottom: 16px"></h2>
+
+      <div class="finance-cards" id="detail-stats"></div>
+
+      <div class="table-wrap">
+        <table id="projects-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Screenshot</th>
+              <th>Made By</th>
+              <th class="sortable" data-col="3" data-dir="none">Hours</th>
+              <th>Source Code</th>
+              <th>Demo</th>
+              <th>Approved At</th>
+            </tr>
+          </thead>
+          <tbody id="projects-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <script>
+      let yswsMap = {};
+      let financesMap = {};
+
+      function getHours(val) {
+        if (Array.isArray(val)) return val[0] ?? 0;
+        return val ?? 0;
+      }
+
+      function parseGitHub(url) {
+        if (!url) return { user: null, repo: null };
+        const m = url.match(/github\.com\/([^\/]+)\/([^\/\s#?]+)/i);
+        if (m) return { user: m[1], repo: m[2].replace(/\.git$/, "") };
+        return { user: null, repo: null };
+      }
+
+      function round(value, precision) {
+        return (
+          Math.round(value * Math.pow(10, precision || 0)) /
+          Math.pow(10, precision || 0)
+        );
+      }
+
+      function formatMoney(val) {
+        if (val === null || val === undefined || isNaN(val)) return "—";
+        return (
+          "$" +
+          Number(val).toLocaleString("en-US", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })
+        );
+      }
+
+      function costClass(spentPerWG) {
+        if (spentPerWG === null || isNaN(spentPerWG)) return "cost-na";
+        if (spentPerWG > 100) return "cost-red";
+        if (spentPerWG > 85) return "cost-yellow";
+        return "cost-green";
+      }
+
+      function attachSortHandlers(tableId, getRowValue) {
+        const table = document.getElementById(tableId);
+        table.querySelectorAll("th.sortable").forEach((th) => {
+          th.addEventListener("click", () => {
+            const col = parseInt(th.dataset.col);
+            const nextDir = th.dataset.dir === "asc" ? "desc" : "asc";
+            table.querySelectorAll("th.sortable").forEach((h) => {
+              h.dataset.dir = "none";
+              h.classList.remove("sort-asc", "sort-desc");
+            });
+            th.dataset.dir = nextDir;
+            th.classList.add(nextDir === "asc" ? "sort-asc" : "sort-desc");
+            const rows = Array.from(table.querySelector("tbody").rows);
+            rows.sort((a, b) => {
+              const av = getRowValue(a, col);
+              const bv = getRowValue(b, col);
+              if (av === null && bv === null) return 0;
+              if (av === null) return 1;
+              if (bv === null) return -1;
+              return nextDir === "asc" ? av - bv : bv - av;
+            });
+            rows.forEach((r) => table.querySelector("tbody").appendChild(r));
+          });
+        });
+      }
+
+      function makeStatCard(label, value, cls) {
+        const card = document.createElement("div");
+        card.className = "stat-card";
+        const lbl = document.createElement("div");
+        lbl.className = "label";
+        lbl.textContent = label;
+        const val = document.createElement("div");
+        val.className = "value " + (cls || "");
+        val.textContent = value;
+        card.appendChild(lbl);
+        card.appendChild(val);
+        return card;
+      }
+
+      function showList() {
+        document.getElementById("detail-view").classList.remove("active");
+        document.getElementById("list-view").classList.add("active");
+        history.pushState(null, "", window.location.pathname);
+      }
+
+      function showDetail(yswsName) {
+        const projects = yswsMap[yswsName] || [];
+        const totalHours = projects.reduce(
+          (sum, p) => sum + getHours(p.fields["Hours Spent"]),
+          0,
+        );
+        const weightedGrants = (totalHours / 10).toFixed(2);
+        const fin = financesMap[yswsName] || {};
+
+        document.getElementById("detail-title").textContent = yswsName;
+
+        const statsEl = document.getElementById("detail-stats");
+        statsEl.innerHTML = "";
+        statsEl.appendChild(makeStatCard("Ships", projects.length));
+        statsEl.appendChild(
+          makeStatCard("Weighted Grants", weightedGrants + " wg"),
+        );
+        if (fin.total_raised !== null && fin.total_raised !== undefined) {
+          statsEl.appendChild(
+            makeStatCard("Total Spent", formatMoney(fin.total_spent), "spent"),
+          );
+          statsEl.appendChild(
+            makeStatCard(
+              "Spending per WG",
+              formatMoney(fin.total_spent / (totalHours / 10)),
+              "spent",
+            ),
+          );
+        } else {
+          statsEl.appendChild(makeStatCard("Finances", "No data", "na"));
+        }
+
+        const tbody = document.getElementById("projects-tbody");
+        tbody.innerHTML = "";
+        document
+          .querySelectorAll("#projects-table th.sortable")
+          .forEach((h) => {
+            h.dataset.dir = "none";
+            h.classList.remove("sort-asc", "sort-desc");
+          });
+
+        projects.forEach((p) => {
+          const f = p.fields;
+          const hours = getHours(f["Hours Spent"]);
+          const codeURL = f["Code URL"] || "";
+          const playURL = f["Playable URL"] || "";
+          const approvedAt = f["Approved At"] || "";
+          const screenshot = f["Screenshot"] && f["Screenshot"][0];
+          const { user, repo } = parseGitHub(codeURL);
+          const name = repo || codeURL || p.id;
+          const madeBy = user || "—";
+
+          const tr = document.createElement("tr");
+          tr.dataset.hours = hours;
+
+          const tdName = document.createElement("td");
+          if (name.length > 23) {
+            tdName.textContent = name.substring(0, 20) + "...";
+            tdName.title = name;
+            tdName.style.cursor = "pointer";
+            tdName.onclick = () =>
+              navigator.clipboard
+                .writeText(name)
+                .catch(() => alert("Name: " + name));
+          } else {
+            tdName.textContent = name;
+          }
+          tr.appendChild(tdName);
+
+          const tdImg = document.createElement("td");
+          if (screenshot) {
+            const img = document.createElement("img");
+            img.src = screenshot.thumbnails?.large?.url ?? screenshot.url;
+            img.alt = "screenshot";
+            img.className = "project-screenshot";
+            tdImg.appendChild(img);
+          } else {
+            tdImg.textContent = "—";
+            tdImg.style.color = "#aaa";
+          }
+          tr.appendChild(tdImg);
+
+          const tdBy = document.createElement("td");
+          if (madeBy.length > 23) {
+            tdBy.textContent = madeBy.substring(0, 20) + "...";
+            tdBy.title = madeBy;
+            tdBy.style.cursor = "pointer";
+            tdBy.onclick = () =>
+              navigator.clipboard
+                .writeText(madeBy)
+                .catch(() => alert("Made by: " + madeBy));
+          } else {
+            tdBy.textContent = madeBy;
+          }
+          tr.appendChild(tdBy);
+
+          const tdHours = document.createElement("td");
+          tdHours.textContent = round(hours, 2);
+          tr.appendChild(tdHours);
+
+          const tdCode = document.createElement("td");
+          if (codeURL) {
+            const a = document.createElement("a");
+            a.href = codeURL;
+            a.textContent = "Source";
+            a.target = "_blank";
+            tdCode.appendChild(a);
+          } else {
+            tdCode.textContent = "—";
+            tdCode.style.color = "#aaa";
+          }
+          tr.appendChild(tdCode);
+
+          const tdPlay = document.createElement("td");
+          if (playURL) {
+            const a = document.createElement("a");
+            a.href = playURL;
+            a.textContent = "Demo";
+            a.target = "_blank";
+            tdPlay.appendChild(a);
+          } else {
+            tdPlay.textContent = "—";
+            tdPlay.style.color = "#aaa";
+          }
+          tr.appendChild(tdPlay);
+
+          const tdApproved = document.createElement("td");
+          tdApproved.textContent = approvedAt;
+          tdApproved.style.color = "#666";
+          tdApproved.style.fontSize = "13px";
+          tr.appendChild(tdApproved);
+
+          tbody.appendChild(tr);
+        });
+
+        document.getElementById("list-view").classList.remove("active");
+        document.getElementById("detail-view").classList.add("active");
+        history.pushState(
+          { ysws: yswsName },
+          "",
+          "#" + encodeURIComponent(yswsName),
+        );
+
+        attachSortHandlers("projects-table", (row, col) => {
+          if (col === 3) return parseFloat(row.dataset.hours) || 0;
+          return 0;
+        });
+      }
+
+      function renderList() {
+        const tbody = document.getElementById("ysws-tbody");
+        tbody.innerHTML = "";
+        const names = Object.keys(yswsMap).sort();
+        names.forEach((name) => {
+          const projects = yswsMap[name];
+          const totalHours = projects.reduce(
+            (sum, p) => sum + getHours(p.fields["Hours Spent"]),
+            0,
+          );
+          const weightedGrants = parseFloat((totalHours / 10).toFixed(2));
+          const fin = financesMap[name] || {};
+          const spent =
+            fin.total_spent !== undefined && fin.total_spent !== null
+              ? fin.total_spent
+              : null;
+          const spentPerWG = spent !== null ? spent / (totalHours / 10) : null;
+
+          const tr = document.createElement("tr");
+          tr.className = "ysws-row";
+          tr.dataset.count = projects.length;
+          tr.dataset.grants = weightedGrants;
+          tr.dataset.spentPerWG = spentPerWG !== null ? spentPerWG : "";
+          tr.addEventListener("click", () => showDetail(name));
+
+          const tdName = document.createElement("td");
+          tdName.textContent = name;
+          tr.appendChild(tdName);
+
+          const tdCount = document.createElement("td");
+          tdCount.textContent = projects.length;
+          tr.appendChild(tdCount);
+
+          const tdGrants = document.createElement("td");
+          tdGrants.textContent = weightedGrants.toFixed(2);
+          tr.appendChild(tdGrants);
+
+          const tdSpentPerWG = document.createElement("td");
+          tdSpentPerWG.className = "money";
+          if (spentPerWG !== null && !isNaN(spentPerWG)) {
+            const badge = document.createElement("span");
+            badge.className = costClass(spentPerWG);
+            badge.textContent = formatMoney(spentPerWG);
+            tdSpentPerWG.appendChild(badge);
+          } else {
+            tdSpentPerWG.innerHTML = '<span class="cost-na">—</span>';
+          }
+          tr.appendChild(tdSpentPerWG);
+
+          tbody.appendChild(tr);
+        });
+
+        document.getElementById("status").style.display = "none";
+        document.getElementById("list-view").classList.add("active");
+
+        attachSortHandlers("ysws-table", (row, col) => {
+          if (col === 1) return parseFloat(row.dataset.count) || 0;
+          if (col === 2) return parseFloat(row.dataset.grants) || 0;
+          if (col === 3)
+            return row.dataset.spentPerWG !== ""
+              ? parseFloat(row.dataset.spentPerWG)
+              : null;
+          return 0;
+        });
+      }
+
+      function handleHash() {
+        const hash = decodeURIComponent(window.location.hash.slice(1));
+        if (hash && yswsMap[hash]) showDetail(hash);
+        else if (Object.keys(yswsMap).length > 0) showList();
+      }
+
+      window.addEventListener("popstate", handleHash);
+
+      const projectsPromise = fetch("Approved Projects.json").then((r) => {
+        if (!r.ok) throw new Error("Failed to load: " + r.status);
+        return r.json();
+      });
+
+      const financesPromise = fetch("ysws_finances.json")
+        .then((r) => (r.ok ? r.json() : {}))
+        .catch(() => ({}));
+
+      Promise.all([projectsPromise, financesPromise])
+        .then(([projects, finances]) => {
+          financesMap = finances;
+          projects.forEach((project) => {
+            const names = project.fields["YSWS–Name"] || ["Unknown"];
+            const name = names[0];
+            if (!yswsMap[name]) yswsMap[name] = [];
+            yswsMap[name].push(project);
+          });
+          renderList();
+          handleHash();
+        })
+        .catch((err) => {
+          const status = document.getElementById("status");
+          status.textContent = "Error loading data: " + err.message;
+          status.className = "error";
+        });
+    </script>
+  </body>
+</html>

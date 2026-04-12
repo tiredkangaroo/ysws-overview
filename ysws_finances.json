@@ -1,0 +1,774 @@
+{
+  "Daydream": {
+    "total_raised": 184053.66,
+    "total_spent": 182014.34
+  },
+  "Summer of Making": {
+    "total_raised": 122391.89,
+    "total_spent": 122391.89
+  },
+  "Boba Drops": {
+    "total_raised": 46819.68,
+    "total_spent": 28791.14
+  },
+  "Blueprint": {
+    "total_raised": 428329.37,
+    "total_spent": 360206.76
+  },
+  "Pixeldust": {
+    "total_raised": 2634.96,
+    "total_spent": 2548.44
+  },
+  "OnBoard": {
+    "total_raised": 175122.36,
+    "total_spent": 174691.45
+  },
+  "Haxmas": {
+    "total_raised": 13655.86,
+    "total_spent": 13621.64
+  },
+  "scraps": {
+    "total_raised": 9239.8,
+    "total_spent": 8925.52
+  },
+  "Campfire Satellites": {
+    "total_raised": null,
+    "total_spent": null
+  },
+  "Siege": {
+    "total_raised": 17786.84,
+    "total_spent": 17184.81
+  },
+  "The Bin": {
+    "total_raised": 2234.53,
+    "total_spent": 2198.6
+  },
+  "Athena Award": {
+    "total_raised": null,
+    "total_spent": null
+  },
+  "Flavortown": {
+    "total_raised": 214028.52,
+    "total_spent": 128469.48
+  },
+  "Hackcraft Mod Edition": {
+    "total_raised": null,
+    "total_spent": null
+  },
+  "High Seas": {
+    "total_raised": 597.6,
+    "total_spent": 315.0
+  },
+  "Highway": {
+    "total_raised": 160591.53,
+    "total_spent": 159599.66
+  },
+  "Gemini": {
+    "total_raised": 6924.77,
+    "total_spent": 5827.89
+  },
+  "Penumbra": {
+    "total_raised": 0.0,
+    "total_spent": 0.0
+  },
+  "Axiom": {
+    "total_raised": 15434.36,
+    "total_spent": 15297.01
+  },
+  "Sprig": {
+    "total_raised": 59418.35,
+    "total_spent": 59215.39
+  },
+  "BakeBuild": {
+    "total_raised": 7477.49,
+    "total_spent": 6920.83
+  },
+  "Swirl": {
+    "total_raised": 3530.02,
+    "total_spent": 3365.33
+  },
+  "FuseRing": {
+    "total_raised": 511.15,
+    "total_spent": 381.48
+  },
+  "Arcade": {
+    "total_raised": 452094.2,
+    "total_spent": 451203.87
+  },
+  "Midnight": {
+    "total_raised": 87125.61,
+    "total_spent": 86947.55
+  },
+  "Vibes": {
+    "total_raised": 386.62,
+    "total_spent": 165.0
+  },
+  "Shipwrecked": {
+    "total_raised": 149404.7,
+    "total_spent": 143688.72
+  },
+  "Shiba": {
+    "total_raised": 71779.72,
+    "total_spent": 71406.39
+  },
+  "Hackaccino": {
+    "total_raised": 5937.73,
+    "total_spent": 5659.49
+  },
+  "Milkyway": {
+    "total_raised": 89332.81,
+    "total_spent": 68231.56
+  },
+  "Hackpad": {
+    "total_raised": 76943.01,
+    "total_spent": 54037.5
+  },
+  "Resolution": {
+    "total_raised": 1096.5,
+    "total_spent": 0.0
+  },
+  "RaspAPI": {
+    "total_raised": 1046.0,
+    "total_spent": 999.47
+  },
+  "Scrapyard": {
+    "total_raised": null,
+    "total_spent": null
+  },
+  "Neon": {
+    "total_raised": null,
+    "total_spent": null
+  },
+  "Congressional Certification": {
+    "total_raised": null,
+    "total_spent": null
+  },
+  "Blot": {
+    "total_raised": 53049.49,
+    "total_spent": 48761.06
+  },
+  "Picoducky": {
+    "total_raised": 1055.65,
+    "total_spent": 890.9
+  },
+  "Waffles": {
+    "total_raised": 976.14,
+    "total_spent": 924.39
+  },
+  "Moonshot": {
+    "total_raised": 82497.9,
+    "total_spent": 80986.79
+  },
+  "Campfire Flagship": {
+    "total_raised": 70487.23,
+    "total_spent": 65490.67
+  },
+  "Minus Twelve": {
+    "total_raised": 500.0,
+    "total_spent": 500.0
+  },
+  "Rewind": {
+    "total_raised": 934.61,
+    "total_spent": 874.27
+  },
+  "Anchor": {
+    "total_raised": 250.0,
+    "total_spent": 79.0
+  },
+  "Sleepover": {
+    "total_raised": 27525.25,
+    "total_spent": 11950.36
+  },
+  "Riceathon": {
+    "total_raised": 6020.49,
+    "total_spent": 2220.15
+  },
+  "TerminalCraft": {
+    "total_raised": 20434.45,
+    "total_spent": 20049.56
+  },
+  "Construct": {
+    "total_raised": 15820.38,
+    "total_spent": 9110.26
+  },
+  "self-portrait": {
+    "total_raised": 0.0,
+    "total_spent": 0.0
+  },
+  "Anansi": {
+    "total_raised": 185.47,
+    "total_spent": 168.63
+  },
+  "The Journey": {
+    "total_raised": 5611.32,
+    "total_spent": 5594.94
+  },
+  "Hack Club: The Game": {
+    "total_raised": null,
+    "total_spent": null
+  },
+  "Fudge": {
+    "total_raised": 586.42,
+    "total_spent": 586.3
+  },
+  "Ember": {
+    "total_raised": 15733.69,
+    "total_spent": 533.14
+  },
+  "Stasis": {
+    "total_raised": 31410.36,
+    "total_spent": 15858.07
+  },
+  "Power Hour": {
+    "total_raised": 724.76,
+    "total_spent": 706.32
+  },
+  "Neighborhood": {
+    "total_raised": 243619.47,
+    "total_spent": 242151.82
+  },
+  "Sockathon": {
+    "total_raised": null,
+    "total_spent": null
+  },
+  "Parthenon": {
+    "total_raised": null,
+    "total_spent": null
+  },
+  "Solder": {
+    "total_raised": 600.0,
+    "total_spent": 316.14
+  },
+  "Giza Game Dev Bootcamp": {
+    "total_raised": null,
+    "total_spent": null
+  },
+  "Prototype": {
+    "total_raised": 136442.81,
+    "total_spent": 79769.7
+  },
+  "Cafe": {
+    "total_raised": 0.0,
+    "total_spent": 0.0
+  },
+  "BrowserBuddy": {
+    "total_raised": 3680.68,
+    "total_spent": 3679.29
+  },
+  "Clutter": {
+    "total_raised": 6278.86,
+    "total_spent": 5901.28
+  },
+  "Pathfinder": {
+    "total_raised": 1066.47,
+    "total_spent": 1008.94
+  },
+  "Campfire Overdrive": {
+    "total_raised": null,
+    "total_spent": null
+  },
+  "Grub": {
+    "total_raised": 2164.53,
+    "total_spent": 1373.46
+  },
+  "Undercity": {
+    "total_raised": 82430.15,
+    "total_spent": 81710.01
+  },
+  "Cargo Cult": {
+    "total_raised": null,
+    "total_spent": null
+  },
+  "Jet Fund": {
+    "total_raised": 2768.51,
+    "total_spent": 1929.85
+  },
+  "flavorless": {
+    "total_raised": 1037.07,
+    "total_spent": 777.83
+  },
+  "Black Box": {
+    "total_raised": 950.0,
+    "total_spent": 950.0
+  },
+  "Keepsake": {
+    "total_raised": 950.52,
+    "total_spent": 799.77
+  },
+  "Remix": {
+    "total_raised": 608.17,
+    "total_spent": 404.06
+  },
+  "Birthday Cards": {
+    "total_raised": 1462.33,
+    "total_spent": 1408.04
+  },
+  "Converge": {
+    "total_raised": 8829.81,
+    "total_spent": 3952.9
+  },
+  "Asylum": {
+    "total_raised": 1376.69,
+    "total_spent": 876.3
+  },
+  "Carnival": {
+    "total_raised": 6265.23,
+    "total_spent": 6222.49
+  },
+  "Smelt": {
+    "total_raised": 497.5,
+    "total_spent": 497.5
+  },
+  "Tinker": {
+    "total_raised": 0.0,
+    "total_spent": 0.0
+  },
+  "Juice": {
+    "total_raised": 136832.28,
+    "total_spent": 136315.29
+  },
+  "Toppings": {
+    "total_raised": 1343.02,
+    "total_spent": 761.0
+  },
+  "Silicon": {
+    "total_raised": 2563.43,
+    "total_spent": 2562.97
+  },
+  "Hacklet": {
+    "total_raised": 976.45,
+    "total_spent": 718.11
+  },
+  "cmd + k": {
+    "total_raised": null,
+    "total_spent": null
+  },
+  "storyboard": {
+    "total_raised": 11044.0,
+    "total_spent": 4953.31
+  },
+  "Visioneer": {
+    "total_raised": 400.0,
+    "total_spent": 338.88
+  },
+  "Easel": {
+    "total_raised": null,
+    "total_spent": null
+  },
+  "Tile": {
+    "total_raised": 778.62,
+    "total_spent": 778.62
+  },
+  "Jumpstart V2": {
+    "total_raised": null,
+    "total_spent": null
+  },
+  "Dummies V2": {
+    "total_raised": null,
+    "total_spent": null
+  },
+  "Polygon": {
+    "total_raised": 599.33,
+    "total_spent": 530.6
+  },
+  "Railway": {
+    "total_raised": 612.0,
+    "total_spent": 124.0
+  },
+  "Jumpstart V3": {
+    "total_raised": null,
+    "total_spent": null
+  },
+  "CodeQuest": {
+    "total_raised": 2163.36,
+    "total_spent": 2160.4
+  },
+  "Toolsmith": {
+    "total_raised": 411.43,
+    "total_spent": 411.43
+  },
+  "Cargo Cult v2": {
+    "total_raised": null,
+    "total_spent": null
+  },
+  "Jungle": {
+    "total_raised": 3793.79,
+    "total_spent": 3420.11
+  },
+  "Grounded": {
+    "total_raised": 6188.97,
+    "total_spent": 6122.72
+  },
+  "Low Skies": {
+    "total_raised": null,
+    "total_spent": null
+  },
+  "Timeless": {
+    "total_raised": 250.0,
+    "total_spent": 250.0
+  },
+  "Hermes": {
+    "total_raised": 242.1,
+    "total_spent": 240.0
+  },
+  "Hack Berry": {
+    "total_raised": null,
+    "total_spent": null
+  },
+  "Cider": {
+    "total_raised": 22624.85,
+    "total_spent": 20930.14
+  },
+  "Haunted": {
+    "total_raised": 22415.39,
+    "total_spent": 22415.19
+  },
+  "Hackmate": {
+    "total_raised": 2103.91,
+    "total_spent": 1962.89
+  },
+  "Infill": {
+    "total_raised": 36792.5,
+    "total_spent": 31618.97
+  },
+  "10 Days In Public": {
+    "total_raised": null,
+    "total_spent": null
+  },
+  "Counterspell": {
+    "total_raised": null,
+    "total_spent": null
+  },
+  "FIX IT": {
+    "total_raised": 150.0,
+    "total_spent": 150.0
+  },
+  "Build Your Own LLM": {
+    "total_raised": null,
+    "total_spent": null
+  },
+  "Tonic": {
+    "total_raised": 629.85,
+    "total_spent": 629.85
+  },
+  "meow": {
+    "total_raised": 1716.64,
+    "total_spent": 1638.09
+  },
+  "Waveband": {
+    "total_raised": null,
+    "total_spent": null
+  },
+  "Foodie": {
+    "total_raised": 3051.73,
+    "total_spent": 3048.63
+  },
+  "This Sketch": {
+    "total_raised": 0.0,
+    "total_spent": 0.0
+  },
+  "Page": {
+    "total_raised": 2764.87,
+    "total_spent": 2646.7
+  },
+  "Cascade": {
+    "total_raised": 1172.43,
+    "total_spent": 1172.43
+  },
+  "Jumpstart V1": {
+    "total_raised": null,
+    "total_spent": null
+  },
+  "JPEG": {
+    "total_raised": 11824.5,
+    "total_spent": 11824.5
+  },
+  "Ham Club": {
+    "total_raised": 645.0,
+    "total_spent": 645.0
+  },
+  "Reactive": {
+    "total_raised": 1131.6,
+    "total_spent": 1018.02
+  },
+  "Reboot": {
+    "total_raised": 13762.45,
+    "total_spent": 13703.89
+  },
+  "Optimize": {
+    "total_raised": 2367.47,
+    "total_spent": 2367.47
+  },
+  "The Zoo": {
+    "total_raised": 1240.03,
+    "total_spent": 466.53
+  },
+  "Endpointer": {
+    "total_raised": 3166.12,
+    "total_spent": 3163.85
+  },
+  "Scrapyard Flagship": {
+    "total_raised": null,
+    "total_spent": null
+  },
+  "10 Hours in Public": {
+    "total_raised": null,
+    "total_spent": null
+  },
+  "Roulette": {
+    "total_raised": 9247.43,
+    "total_spent": 8976.88
+  },
+  "Boba Olympics": {
+    "total_raised": 349.32,
+    "total_spent": 240.65
+  },
+  "Apex": {
+    "total_raised": 19060.99,
+    "total_spent": 19060.99
+  },
+  "Reality": {
+    "total_raised": 2310.71,
+    "total_spent": 2310.45
+  },
+  "RPG": {
+    "total_raised": null,
+    "total_spent": null
+  },
+  "Squeak": {
+    "total_raised": 956.17,
+    "total_spent": 806.08
+  },
+  "Bauble": {
+    "total_raised": 332.9,
+    "total_spent": 23.88
+  },
+  "Emerge": {
+    "total_raised": 664.59,
+    "total_spent": 664.59
+  },
+  "Authly": {
+    "total_raised": 1285.42,
+    "total_spent": 1285.42
+  },
+  "Unknown": {
+    "total_raised": null,
+    "total_spent": null
+  },
+  "twist": {
+    "total_raised": 2012.39,
+    "total_spent": 1801.76
+  },
+  "Iframe": {
+    "total_raised": null,
+    "total_spent": null
+  },
+  "Reflow": {
+    "total_raised": 592.09,
+    "total_spent": 509.12
+  },
+  "Reamde": {
+    "total_raised": null,
+    "total_spent": null
+  },
+  "decode": {
+    "total_raised": 296.01,
+    "total_spent": 296.01
+  },
+  "Aesthetic": {
+    "total_raised": null,
+    "total_spent": null
+  },
+  "Inkling": {
+    "total_raised": 1629.53,
+    "total_spent": 0.0
+  },
+  "Fanpage": {
+    "total_raised": 2764.87,
+    "total_spent": 2646.7
+  },
+  "Remixed": {
+    "total_raised": 0.0,
+    "total_spent": 0.0
+  },
+  "Toybox": {
+    "total_raised": 400.0,
+    "total_spent": 400.0
+  },
+  "Sidequests": {
+    "total_raised": null,
+    "total_spent": null
+  },
+  "Homelab": {
+    "total_raised": 977.69,
+    "total_spent": 495.0
+  },
+  "RSS": {
+    "total_raised": 197.82,
+    "total_spent": 163.82
+  },
+  "Popcorn": {
+    "total_raised": null,
+    "total_spent": null
+  },
+  "neohack": {
+    "total_raised": 100.0,
+    "total_spent": 100.0
+  },
+  "Dummies": {
+    "total_raised": 10432.67,
+    "total_spent": 10432.45
+  },
+  "Extensify": {
+    "total_raised": 286.02,
+    "total_spent": 286.02
+  },
+  "Touch Grass": {
+    "total_raised": 0.0,
+    "total_spent": 0.0
+  },
+  "Craft": {
+    "total_raised": 31593.9,
+    "total_spent": 5145.79
+  },
+  "Keepsake Aurora": {
+    "total_raised": null,
+    "total_spent": null
+  },
+  "Accelerate": {
+    "total_raised": 7022.7,
+    "total_spent": 7001.65
+  },
+  "Horizons": {
+    "total_raised": null,
+    "total_spent": null
+  },
+  "Armed": {
+    "total_raised": 125.94,
+    "total_spent": 123.33
+  },
+  "Alleyway": {
+    "total_raised": 6437.57,
+    "total_spent": 6405.86
+  },
+  "Thunder": {
+    "total_raised": 1800.0,
+    "total_spent": 1699.52
+  },
+  "Wizard Orpheus": {
+    "total_raised": null,
+    "total_spent": null
+  },
+  "Soaked": {
+    "total_raised": null,
+    "total_spent": null
+  },
+  "Club Dashboard": {
+    "total_raised": null,
+    "total_spent": null
+  },
+  "Slushies": {
+    "total_raised": 1461.12,
+    "total_spent": 1001.11
+  },
+  "Hashcore": {
+    "total_raised": null,
+    "total_spent": null
+  },
+  "Playphone": {
+    "total_raised": 300.0,
+    "total_spent": 300.0
+  },
+  "Q ": {
+    "total_raised": 61317.45,
+    "total_spent": 39634.61
+  },
+  "iplace": {
+    "total_raised": 269.15,
+    "total_spent": 269.15
+  },
+  "Spatula": {
+    "total_raised": 70.01,
+    "total_spent": 45.01
+  },
+  "wacky files": {
+    "total_raised": 1461.45,
+    "total_spent": 1240.04
+  },
+  "Tarot": {
+    "total_raised": null,
+    "total_spent": null
+  },
+  "Teach Your Machine": {
+    "total_raised": null,
+    "total_spent": null
+  },
+  "Waveform": {
+    "total_raised": 138.97,
+    "total_spent": 117.9
+  },
+  "Raspite": {
+    "total_raised": 207.24,
+    "total_spent": 110.02
+  },
+  "Coeur": {
+    "total_raised": 500.0,
+    "total_spent": 20.0
+  },
+  "Retrospect": {
+    "total_raised": 100.0,
+    "total_spent": 66.99
+  },
+  "dockerize": {
+    "total_raised": 374.45,
+    "total_spent": 374.45
+  },
+  "Portal-Vr": {
+    "total_raised": 1085.27,
+    "total_spent": 1072.0
+  },
+  "Dessert": {
+    "total_raised": 326.0,
+    "total_spent": 326.0
+  },
+  "woof": {
+    "total_raised": 227.5,
+    "total_spent": 197.0
+  },
+  "Hackfinger": {
+    "total_raised": 200.94,
+    "total_spent": 135.73
+  },
+  "Overflow-Hidden": {
+    "total_raised": 8.5,
+    "total_spent": 8.5
+  },
+  "pxl": {
+    "total_raised": 500.0,
+    "total_spent": 450.0
+  },
+  "Gamefolio": {
+    "total_raised": 120.0,
+    "total_spent": 120.0
+  },
+  "pulse": {
+    "total_raised": 107.01,
+    "total_spent": 107.01
+  },
+  "ClubSite": {
+    "total_raised": 50.0,
+    "total_spent": 50.0
+  },
+  "Infinity": {
+    "total_raised": 620.15,
+    "total_spent": 620.15
+  },
+  "Minicraft": {
+    "total_raised": null,
+    "total_spent": null
+  },
+  "Illumination": {
+    "total_raised": 61.0,
+    "total_spent": 61.0
+  }
+}
