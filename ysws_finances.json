@@ -1,43 +1,47 @@
 {
   "Daydream": {
-    "total_raised": 184053.66,
-    "total_spent": 182014.34
+    "total_raised": 184128.66,
+    "total_spent": 182262.04
   },
   "Summer of Making": {
     "total_raised": 122391.89,
     "total_spent": 122391.89
   },
   "Boba Drops": {
-    "total_raised": 46819.68,
-    "total_spent": 28791.14
+    "total_raised": 49259.95,
+    "total_spent": 30258.67
   },
   "Blueprint": {
-    "total_raised": 428348.67,
-    "total_spent": 360574.22
+    "total_raised": 437831.01,
+    "total_spent": 434269.06
   },
   "Pixeldust": {
-    "total_raised": 2634.96,
+    "total_raised": 2643.82,
     "total_spent": 2548.44
   },
   "OnBoard": {
-    "total_raised": 175122.36,
-    "total_spent": 174691.45
+    "total_raised": 176702.23,
+    "total_spent": 176213.38
   },
   "Haxmas": {
-    "total_raised": 13655.86,
-    "total_spent": 13621.64
+    "total_raised": 13888.54,
+    "total_spent": 13867.89
   },
   "scraps": {
-    "total_raised": 9239.8,
-    "total_spent": 8925.52
+    "total_raised": 9332.85,
+    "total_spent": 9327.81
   },
   "Campfire Satellites": {
     "total_raised": null,
     "total_spent": null
   },
   "Siege": {
-    "total_raised": 17786.84,
-    "total_spent": 17184.81
+    "total_raised": 17789.7,
+    "total_spent": 17784.81
+  },
+  "Swirl": {
+    "total_raised": 7086.34,
+    "total_spent": 4206.33
   },
   "The Bin": {
     "total_raised": 2234.53,
@@ -48,8 +52,8 @@
     "total_spent": null
   },
   "Flavortown": {
-    "total_raised": 214035.34,
-    "total_spent": 128688.55
+    "total_raised": 374152.15,
+    "total_spent": 350656.8
   },
   "Hackcraft Mod Edition": {
     "total_raised": null,
@@ -59,9 +63,13 @@
     "total_raised": 597.6,
     "total_spent": 315.0
   },
+  "Stasis": {
+    "total_raised": 153446.81,
+    "total_spent": 128314.41
+  },
   "Highway": {
-    "total_raised": 160591.53,
-    "total_spent": 159599.66
+    "total_raised": 162754.05,
+    "total_spent": 161750.19
   },
   "Gemini": {
     "total_raised": 6924.77,
@@ -72,60 +80,60 @@
     "total_spent": 0.0
   },
   "Axiom": {
-    "total_raised": 15434.36,
-    "total_spent": 15297.01
+    "total_raised": 15591.54,
+    "total_spent": 15735.21
   },
   "Sprig": {
-    "total_raised": 59418.35,
-    "total_spent": 59215.39
+    "total_raised": 61487.29,
+    "total_spent": 59784.38
   },
   "BakeBuild": {
-    "total_raised": 7477.49,
-    "total_spent": 6920.83
-  },
-  "Swirl": {
-    "total_raised": 3530.02,
-    "total_spent": 3365.33
+    "total_raised": 9947.01,
+    "total_spent": 7496.44
   },
   "FuseRing": {
-    "total_raised": 511.15,
-    "total_spent": 381.48
+    "total_raised": 992.9,
+    "total_spent": 425.34
   },
   "Arcade": {
-    "total_raised": 452094.2,
+    "total_raised": 452104.2,
     "total_spent": 451203.87
   },
   "Midnight": {
-    "total_raised": 87125.61,
-    "total_spent": 86947.55
+    "total_raised": 88264.27,
+    "total_spent": 88250.11
   },
-  "Vibes": {
-    "total_raised": 386.62,
-    "total_spent": 165.0
+  "s": {
+    "total_raised": 4149.21,
+    "total_spent": 0.0
   },
   "Shipwrecked": {
-    "total_raised": 149404.7,
-    "total_spent": 143688.72
+    "total_raised": 149444.7,
+    "total_spent": 143873.72
   },
   "Shiba": {
-    "total_raised": 71779.72,
-    "total_spent": 71406.39
+    "total_raised": 71785.6,
+    "total_spent": 71431.44
   },
   "Hackaccino": {
-    "total_raised": 5937.73,
-    "total_spent": 5659.49
+    "total_raised": 5949.52,
+    "total_spent": 5721.49
+  },
+  "Construct": {
+    "total_raised": 58370.2,
+    "total_spent": 32016.47
   },
   "Milkyway": {
-    "total_raised": 89332.81,
-    "total_spent": 68248.12
+    "total_raised": 101066.22,
+    "total_spent": 89547.88
   },
   "Hackpad": {
-    "total_raised": 76943.01,
-    "total_spent": 54037.5
+    "total_raised": 81919.61,
+    "total_spent": 58982.2
   },
   "Resolution": {
-    "total_raised": 1096.5,
-    "total_spent": 0.0
+    "total_raised": 3010.25,
+    "total_spent": 1672.93
   },
   "RaspAPI": {
     "total_raised": 1046.0,
@@ -134,6 +142,14 @@
   "Scrapyard": {
     "total_raised": null,
     "total_spent": null
+  },
+  "Macondo": {
+    "total_raised": 27854.44,
+    "total_spent": 6949.45
+  },
+  "Forge": {
+    "total_raised": 7045.31,
+    "total_spent": 1386.7
   },
   "Neon": {
     "total_raised": null,
@@ -149,19 +165,19 @@
   },
   "Picoducky": {
     "total_raised": 1055.65,
-    "total_spent": 890.9
+    "total_spent": 913.83
   },
   "Waffles": {
-    "total_raised": 976.14,
-    "total_spent": 924.39
+    "total_raised": 1044.46,
+    "total_spent": 954.39
   },
   "Moonshot": {
-    "total_raised": 82497.9,
-    "total_spent": 80986.79
+    "total_raised": 82545.05,
+    "total_spent": 81199.01
   },
   "Campfire Flagship": {
-    "total_raised": 70487.23,
-    "total_spent": 65490.67
+    "total_raised": 81783.45,
+    "total_spent": 79285.62
   },
   "Minus Twelve": {
     "total_raised": 500.0,
@@ -175,56 +191,56 @@
     "total_raised": 250.0,
     "total_spent": 79.0
   },
+  "Horizons": {
+    "total_raised": null,
+    "total_spent": null
+  },
   "Sleepover": {
-    "total_raised": 27525.25,
-    "total_spent": 11950.36
+    "total_raised": 63683.53,
+    "total_spent": 51717.27
   },
   "Riceathon": {
-    "total_raised": 6020.49,
+    "total_raised": 9210.96,
     "total_spent": 2220.15
   },
   "TerminalCraft": {
-    "total_raised": 20434.45,
-    "total_spent": 20049.56
+    "total_raised": 23679.41,
+    "total_spent": 20286.56
   },
-  "Construct": {
-    "total_raised": 15820.38,
-    "total_spent": 9110.26
+  "Hack Club: The Game": {
+    "total_raised": null,
+    "total_spent": null
   },
   "self-portrait": {
     "total_raised": 0.0,
     "total_spent": 0.0
   },
   "Anansi": {
-    "total_raised": 185.47,
+    "total_raised": 185.99,
     "total_spent": 168.63
   },
   "The Journey": {
     "total_raised": 5611.32,
     "total_spent": 5594.94
   },
-  "Hack Club: The Game": {
-    "total_raised": null,
-    "total_spent": null
-  },
   "Fudge": {
-    "total_raised": 586.42,
+    "total_raised": 639.7,
     "total_spent": 586.3
   },
   "Ember": {
-    "total_raised": 15733.69,
-    "total_spent": 533.14
-  },
-  "Stasis": {
-    "total_raised": 31410.36,
-    "total_spent": 15858.07
+    "total_raised": 24871.63,
+    "total_spent": 12272.45
   },
   "Power Hour": {
     "total_raised": 724.76,
     "total_spent": 706.32
   },
+  "Fallout": {
+    "total_raised": null,
+    "total_spent": null
+  },
   "Neighborhood": {
-    "total_raised": 243619.47,
+    "total_raised": 243625.53,
     "total_spent": 242151.82
   },
   "Sockathon": {
@@ -239,13 +255,17 @@
     "total_raised": 600.0,
     "total_spent": 316.14
   },
+  "Jackpot": {
+    "total_raised": 28834.32,
+    "total_spent": 26990.62
+  },
   "Giza Game Dev Bootcamp": {
     "total_raised": null,
     "total_spent": null
   },
   "Prototype": {
-    "total_raised": 136442.81,
-    "total_spent": 79769.7
+    "total_raised": 136942.81,
+    "total_spent": 80069.7
   },
   "Cafe": {
     "total_raised": 0.0,
@@ -256,8 +276,8 @@
     "total_spent": 3679.29
   },
   "Clutter": {
-    "total_raised": 6278.86,
-    "total_spent": 5901.28
+    "total_raised": 6340.47,
+    "total_spent": 6322.28
   },
   "Pathfinder": {
     "total_raised": 1066.47,
@@ -268,7 +288,7 @@
     "total_spent": null
   },
   "Grub": {
-    "total_raised": 2164.53,
+    "total_raised": 2187.68,
     "total_spent": 1373.46
   },
   "Undercity": {
@@ -280,12 +300,16 @@
     "total_spent": null
   },
   "Jet Fund": {
-    "total_raised": 2768.51,
-    "total_spent": 1929.85
+    "total_raised": 2768.8,
+    "total_spent": 1984.85
+  },
+  "HackVault": {
+    "total_raised": 1482.65,
+    "total_spent": 500.5
   },
   "flavorless": {
-    "total_raised": 1037.07,
-    "total_spent": 777.83
+    "total_raised": 1156.07,
+    "total_spent": 796.33
   },
   "Black Box": {
     "total_raised": 950.0,
@@ -297,23 +321,23 @@
   },
   "Remix": {
     "total_raised": 608.17,
-    "total_spent": 404.06
+    "total_spent": 607.84
   },
   "Birthday Cards": {
-    "total_raised": 1462.33,
-    "total_spent": 1408.04
+    "total_raised": 1487.83,
+    "total_spent": 1458.04
   },
   "Converge": {
     "total_raised": 8829.81,
     "total_spent": 3952.9
   },
   "Asylum": {
-    "total_raised": 1376.69,
+    "total_raised": 1377.21,
     "total_spent": 876.3
   },
   "Carnival": {
-    "total_raised": 6265.23,
-    "total_spent": 6222.49
+    "total_raised": 15059.87,
+    "total_spent": 8709.35
   },
   "Smelt": {
     "total_raised": 497.5,
@@ -321,15 +345,15 @@
   },
   "Tinker": {
     "total_raised": 0.0,
-    "total_spent": 0.0
+    "total_spent": 35.0
   },
   "Juice": {
-    "total_raised": 136832.28,
-    "total_spent": 136315.29
+    "total_raised": 137745.28,
+    "total_spent": 137125.29
   },
   "Toppings": {
-    "total_raised": 1343.02,
-    "total_spent": 761.0
+    "total_raised": 1361.28,
+    "total_spent": 860.44
   },
   "Silicon": {
     "total_raised": 2563.43,
@@ -337,15 +361,15 @@
   },
   "Hacklet": {
     "total_raised": 976.45,
-    "total_spent": 718.11
+    "total_spent": 728.11
   },
   "cmd + k": {
     "total_raised": null,
     "total_spent": null
   },
   "storyboard": {
-    "total_raised": 11044.0,
-    "total_spent": 4953.31
+    "total_raised": 11559.1,
+    "total_spent": 10332.25
   },
   "Visioneer": {
     "total_raised": 400.0,
@@ -368,8 +392,8 @@
     "total_spent": null
   },
   "Polygon": {
-    "total_raised": 599.33,
-    "total_spent": 530.6
+    "total_raised": 927.14,
+    "total_spent": 815.6
   },
   "Railway": {
     "total_raised": 612.0,
@@ -396,7 +420,7 @@
     "total_spent": 3420.11
   },
   "Grounded": {
-    "total_raised": 6188.97,
+    "total_raised": 6206.97,
     "total_spent": 6122.72
   },
   "Low Skies": {
@@ -416,7 +440,7 @@
     "total_spent": null
   },
   "Cider": {
-    "total_raised": 22624.85,
+    "total_raised": 22720.75,
     "total_spent": 20930.14
   },
   "Haunted": {
@@ -428,8 +452,8 @@
     "total_spent": 1962.89
   },
   "Infill": {
-    "total_raised": 36792.5,
-    "total_spent": 31618.97
+    "total_raised": 37662.34,
+    "total_spent": 36839.33
   },
   "10 Days In Public": {
     "total_raised": null,
@@ -448,11 +472,15 @@
     "total_spent": null
   },
   "Tonic": {
-    "total_raised": 629.85,
+    "total_raised": 697.43,
     "total_spent": 629.85
   },
+  "beest": {
+    "total_raised": 27827.73,
+    "total_spent": 26718.23
+  },
   "meow": {
-    "total_raised": 1716.64,
+    "total_raised": 1717.14,
     "total_spent": 1638.09
   },
   "Waveband": {
@@ -461,15 +489,19 @@
   },
   "Foodie": {
     "total_raised": 3051.73,
-    "total_spent": 3048.63
+    "total_spent": 3051.73
   },
   "This Sketch": {
     "total_raised": 0.0,
     "total_spent": 0.0
   },
+  "PullQuests": {
+    "total_raised": 379.36,
+    "total_spent": 370.0
+  },
   "Page": {
     "total_raised": 2764.87,
-    "total_spent": 2646.7
+    "total_spent": 2764.87
   },
   "Cascade": {
     "total_raised": 1172.43,
@@ -488,11 +520,11 @@
     "total_spent": 645.0
   },
   "Reactive": {
-    "total_raised": 1131.6,
-    "total_spent": 1018.02
+    "total_raised": 1135.86,
+    "total_spent": 1022.28
   },
   "Reboot": {
-    "total_raised": 13762.45,
+    "total_raised": 13833.19,
     "total_spent": 13703.89
   },
   "Optimize": {
@@ -501,11 +533,11 @@
   },
   "The Zoo": {
     "total_raised": 1240.03,
-    "total_spent": 466.53
+    "total_spent": 1240.03
   },
   "Endpointer": {
-    "total_raised": 3166.12,
-    "total_spent": 3163.85
+    "total_raised": 3191.85,
+    "total_spent": 3191.85
   },
   "Scrapyard Flagship": {
     "total_raised": null,
@@ -520,16 +552,16 @@
     "total_spent": 8976.88
   },
   "Boba Olympics": {
-    "total_raised": 349.32,
-    "total_spent": 240.65
+    "total_raised": 349.35,
+    "total_spent": 244.15
   },
   "Apex": {
-    "total_raised": 19060.99,
-    "total_spent": 19060.99
+    "total_raised": 19405.99,
+    "total_spent": 19405.99
   },
   "Reality": {
-    "total_raised": 2310.71,
-    "total_spent": 2310.45
+    "total_raised": 2417.16,
+    "total_spent": 2316.9
   },
   "RPG": {
     "total_raised": null,
@@ -546,6 +578,10 @@
   "Emerge": {
     "total_raised": 664.59,
     "total_spent": 664.59
+  },
+  "Ceiling": {
+    "total_raised": 4768.31,
+    "total_spent": 1803.28
   },
   "Authly": {
     "total_raised": 1285.42,
@@ -585,11 +621,11 @@
   },
   "Fanpage": {
     "total_raised": 2764.87,
-    "total_spent": 2646.7
+    "total_spent": 2764.87
   },
   "Remixed": {
-    "total_raised": 0.0,
-    "total_spent": 0.0
+    "total_raised": 2013.95,
+    "total_spent": 810.64
   },
   "Toybox": {
     "total_raised": 400.0,
@@ -600,8 +636,8 @@
     "total_spent": null
   },
   "Homelab": {
-    "total_raised": 977.69,
-    "total_spent": 495.0
+    "total_raised": 3612.2,
+    "total_spent": 3612.2
   },
   "RSS": {
     "total_raised": 197.82,
@@ -615,9 +651,13 @@
     "total_raised": 100.0,
     "total_spent": 100.0
   },
+  "trailit": {
+    "total_raised": 2010.69,
+    "total_spent": 1501.52
+  },
   "Dummies": {
-    "total_raised": 10432.67,
-    "total_spent": 10432.45
+    "total_raised": 11651.31,
+    "total_spent": 11646.41
   },
   "Extensify": {
     "total_raised": 286.02,
@@ -625,30 +665,26 @@
   },
   "Touch Grass": {
     "total_raised": 0.0,
-    "total_spent": 0.0
+    "total_spent": 42.0
   },
   "Craft": {
-    "total_raised": 31593.9,
-    "total_spent": 5145.79
+    "total_raised": 35345.04,
+    "total_spent": 5994.21
   },
   "Keepsake Aurora": {
     "total_raised": null,
     "total_spent": null
   },
   "Accelerate": {
-    "total_raised": 7022.7,
-    "total_spent": 7001.65
-  },
-  "Horizons": {
-    "total_raised": null,
-    "total_spent": null
+    "total_raised": 7191.79,
+    "total_spent": 7074.95
   },
   "Armed": {
     "total_raised": 125.94,
     "total_spent": 123.33
   },
   "Alleyway": {
-    "total_raised": 6437.57,
+    "total_raised": 6437.88,
     "total_spent": 6405.86
   },
   "Thunder": {
@@ -668,8 +704,8 @@
     "total_spent": null
   },
   "Slushies": {
-    "total_raised": 1461.12,
-    "total_spent": 1001.11
+    "total_raised": 1487.03,
+    "total_spent": 1081.11
   },
   "Hashcore": {
     "total_raised": null,
@@ -680,20 +716,20 @@
     "total_spent": 300.0
   },
   "Q ": {
-    "total_raised": 61317.45,
-    "total_spent": 39634.61
+    "total_raised": 70457.66,
+    "total_spent": 47071.25
   },
   "iplace": {
-    "total_raised": 269.15,
-    "total_spent": 269.15
+    "total_raised": 337.44,
+    "total_spent": 295.15
   },
   "Spatula": {
     "total_raised": 70.01,
     "total_spent": 45.01
   },
   "wacky files": {
-    "total_raised": 1461.45,
-    "total_spent": 1240.04
+    "total_raised": 1824.82,
+    "total_spent": 1621.04
   },
   "Tarot": {
     "total_raised": null,
@@ -704,20 +740,28 @@
     "total_spent": null
   },
   "Waveform": {
-    "total_raised": 138.97,
-    "total_spent": 117.9
+    "total_raised": 140.0,
+    "total_spent": 139.0
   },
   "Raspite": {
-    "total_raised": 207.24,
+    "total_raised": 211.04,
     "total_spent": 110.02
   },
   "Coeur": {
-    "total_raised": 500.0,
-    "total_spent": 20.0
+    "total_raised": 520.0,
+    "total_spent": 257.05
   },
   "Retrospect": {
     "total_raised": 100.0,
     "total_spent": 66.99
+  },
+  "Shipyard": {
+    "total_raised": 200.0,
+    "total_spent": 0.0
+  },
+  "Boot": {
+    "total_raised": 13833.19,
+    "total_spent": 13703.89
   },
   "dockerize": {
     "total_raised": 374.45,
@@ -737,7 +781,11 @@
   },
   "Hackfinger": {
     "total_raised": 200.94,
-    "total_spent": 135.73
+    "total_spent": 186.73
+  },
+  "Stardance": {
+    "total_raised": 121411.98,
+    "total_spent": 117937.36
   },
   "Overflow-Hidden": {
     "total_raised": 8.5,
@@ -745,19 +793,19 @@
   },
   "pxl": {
     "total_raised": 500.0,
-    "total_spent": 450.0
+    "total_spent": 500.0
   },
   "Gamefolio": {
-    "total_raised": 120.0,
+    "total_raised": 132.31,
     "total_spent": 120.0
   },
   "pulse": {
     "total_raised": 107.01,
     "total_spent": 107.01
   },
-  "ClubSite": {
-    "total_raised": 50.0,
-    "total_spent": 50.0
+  "Clubs": {
+    "total_raised": 1991.45,
+    "total_spent": 1738.94
   },
   "Infinity": {
     "total_raised": 620.15,

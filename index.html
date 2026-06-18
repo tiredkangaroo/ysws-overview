@@ -3,652 +3,932 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ysws & projects</title>
+    <title>YSWS Ships Dashboard</title>
     <style>
       *,
       *::before,
       *::after {
         box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --bg: #f7f7f5;
+        --surface: #ffffff;
+        --border: #e4e4e0;
+        --text: #1a1a18;
+        --muted: #6b6b65;
+        --accent: #ec5533;
+        --accent-soft: #fff0ed;
+        --radius: 6px;
+        --font: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+        --mono: "SF Mono", "Fira Code", "Cascadia Code", monospace;
       }
 
       body {
-        font-family:
-          system-ui,
-          -apple-system,
-          BlinkMacSystemFont,
-          "Segoe UI",
-          Roboto,
-          sans-serif;
-	min-width: 67vw;
-        width: fit-content;
-        max-width: 90vw;
-        margin: 0 auto;
-        padding: 40px 24px 80px;
-        background: #f7f6f3;
-        color: #1a1a1a;
-        line-height: 1.5;
-      }
-
-      h1 {
-        font-size: 24px;
-        font-weight: 600;
-        margin: 0 0 4px;
-        color: #111;
-      }
-
-      h2 {
-        font-size: 20px;
-        font-weight: 600;
-        margin: 0 0 4px;
-        color: #111;
-      }
-
-      .page-header {
-        margin-bottom: 28px;
-        border-bottom: 1px solid #e0ddd6;
-        padding-bottom: 16px;
-      }
-
-      .page-header p {
-        margin: 0;
-        color: #666;
+        font-family: var(--font);
+        background: var(--bg);
+        color: var(--text);
         font-size: 14px;
+        line-height: 1.5;
+        min-height: 100vh;
       }
 
-      a {
-        color: #2563eb;
-        text-decoration: none;
+      /* HEADER */
+      header {
+        background: var(--surface);
+        border-bottom: 1px solid var(--border);
+        padding: 0 20px;
+        display: flex;
+        align-items: center;
+        gap: 28px;
+        height: 48px;
+        position: sticky;
+        top: 0;
+        z-index: 100;
       }
-      a:hover {
-        text-decoration: underline;
+      .logo {
+        font-weight: 700;
+        font-size: 15px;
+        letter-spacing: -0.3px;
+        color: var(--text);
+        white-space: nowrap;
+      }
+      .logo span {
+        color: var(--accent);
       }
 
-      /* Tables */
-      .table-wrap {
-        background: #fff;
-        border: 1px solid #e0ddd6;
+      /* TABS */
+      .tabs {
+        display: flex;
+        gap: 2px;
+      }
+      .tab-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 6px 12px;
+        border-radius: var(--radius);
+        font-family: var(--font);
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--muted);
+        transition:
+          background 0.12s,
+          color 0.12s;
+      }
+      .tab-btn.active {
+        background: var(--accent-soft);
+        color: var(--accent);
+      }
+      .tab-btn:hover:not(.active) {
+        background: #f0f0ed;
+        color: var(--text);
+      }
+
+      /* TOOLBAR */
+      .toolbar {
+        padding: 12px 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+        background: var(--surface);
+        border-bottom: 1px solid var(--border);
+      }
+      .toolbar-left {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex: 1;
+        min-width: 0;
+      }
+      .back-btn {
+        background: none;
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        cursor: pointer;
+        padding: 5px 10px;
+        font-size: 13px;
+        font-family: var(--font);
+        color: var(--muted);
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        transition:
+          border-color 0.12s,
+          color 0.12s;
+      }
+      .back-btn:hover {
+        border-color: #ccc;
+        color: var(--text);
+      }
+      .toolbar-title {
+        font-weight: 600;
+        font-size: 14px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .toolbar-count {
+        font-size: 12px;
+        color: var(--muted);
+        background: #f0f0ed;
+        padding: 2px 7px;
         border-radius: 10px;
+        white-space: nowrap;
+      }
+
+      .search-wrap {
+        position: relative;
+        flex: 1;
+        max-width: 340px;
+      }
+      .search-icon {
+        position: absolute;
+        left: 9px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--muted);
+        pointer-events: none;
+      }
+      input[type="search"] {
+        width: 100%;
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 6px 10px 6px 30px;
+        font-family: var(--font);
+        font-size: 13px;
+        background: var(--bg);
+        color: var(--text);
+        outline: none;
+        transition: border-color 0.12s;
+      }
+      input[type="search"]:focus {
+        border-color: #aaa;
+        background: #fff;
+      }
+
+      select {
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 6px 28px 6px 10px;
+        font-family: var(--font);
+        font-size: 13px;
+        background: var(--bg)
+          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%236b6b65'/%3E%3C/svg%3E")
+          no-repeat right 10px center;
+        appearance: none;
+        cursor: pointer;
+        color: var(--text);
+        outline: none;
+      }
+      select:focus {
+        border-color: #aaa;
+      }
+
+      /* SEARCH HINT */
+      .search-hint {
+        width: 100%;
+        font-size: 11.5px;
+        color: var(--muted);
+        padding: 0 0 2px 0;
+      }
+      .search-hint code {
+        font-family: var(--mono);
+        font-size: 11px;
+        background: #f0f0ed;
+        padding: 1px 4px;
+        border-radius: 3px;
+      }
+
+      /* MAIN */
+      main {
+        padding: 16px 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      /* YSWS TABLE */
+      .ysws-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
         overflow: hidden;
       }
-
-      table {
-        border-collapse: collapse;
-        width: 100%;
-        font-size: 14px;
-      }
-
-      th,
-      td {
+      .ysws-table th {
         text-align: left;
-        padding: 11px 16px;
-        border-bottom: 1px solid #ede9e2;
-      }
-
-      thead th {
-        background: #f2f0eb;
-        font-size: 12px;
+        padding: 10px 14px;
+        font-size: 11px;
         font-weight: 600;
         text-transform: uppercase;
         letter-spacing: 0.05em;
-        color: #555;
-        border-bottom: 1px solid #ddd9d0;
+        color: var(--muted);
+        background: #fafaf8;
+        border-bottom: 1px solid var(--border);
+      }
+      .ysws-table th.sortable {
+        cursor: pointer;
+        user-select: none;
+      }
+      .ysws-table th.sortable:hover {
+        color: var(--text);
+      }
+      .sort-indicator {
+        margin-left: 4px;
+        opacity: 0.5;
+      }
+      .sort-indicator.active {
+        opacity: 1;
+        color: var(--accent);
       }
 
-      tbody tr:last-child td {
+      .ysws-table td {
+        padding: 9px 14px;
+        border-bottom: 1px solid #f0f0ed;
+        font-size: 13px;
+      }
+      .ysws-table tr:last-child td {
         border-bottom: none;
       }
-
-      tbody tr:hover {
-        background: #faf9f6;
+      .ysws-table tr:hover td {
+        background: #fafaf8;
       }
-
       .ysws-row {
         cursor: pointer;
       }
-      .ysws-row td:first-child {
-        color: #2563eb;
+      .ysws-name {
         font-weight: 500;
+        color: var(--accent);
+      }
+      .ysws-name:hover {
+        text-decoration: underline;
+      }
+      .num {
+        font-variant-numeric: tabular-nums;
+        font-family: var(--mono);
+        font-size: 12.5px;
       }
 
-      /* Sortable */
-      th.sortable {
-        cursor: pointer;
-        user-select: none;
+      /* PROJECT GRID */
+      .project-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .project-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        display: grid;
+        grid-template-columns: 80px 1fr;
+        overflow: hidden;
+        transition: border-color 0.12s;
+      }
+      .project-card:hover {
+        border-color: #ccc;
+      }
+
+      .project-thumb {
+        width: 80px;
+        height: 68px;
+        object-fit: cover;
+        object-position: top;
+        display: block;
+        background: #f0f0ed;
+        flex-shrink: 0;
+      }
+      .project-thumb-err {
+        width: 80px;
+        height: 68px;
+        background: #f0f0ed;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #ccc;
+        font-size: 22px;
+        flex-shrink: 0;
+      }
+
+      .project-info {
+        padding: 8px 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+        min-width: 0;
+      }
+      .project-row1 {
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .project-name {
+        font-weight: 600;
+        font-size: 13px;
+        color: var(--text);
+        overflow: hidden;
+        text-overflow: ellipsis;
         white-space: nowrap;
       }
-      th.sortable:hover {
-        background: #e8e4dd;
+      .project-user {
+        font-size: 12px;
+        color: var(--muted);
+        white-space: nowrap;
       }
-      th.sortable::after {
-        content: " ⇅";
-        font-size: 10px;
-        color: #aaa;
-      }
-      th.sort-asc::after {
-        content: " ▲";
-        color: #444;
-      }
-      th.sort-desc::after {
-        content: " ▼";
-        color: #444;
-      }
-
-      /* Stat cards */
-      .finance-cards {
+      .project-meta-right {
+        margin-left: auto;
         display: flex;
-        flex-wrap: wrap;
-        gap: 12px;
-        margin: 0 0 24px;
+        align-items: center;
+        gap: 8px;
       }
-
-      .stat-card {
-        background: #fff;
-        border: 1px solid #e0ddd6;
-        border-radius: 8px;
-        padding: 14px 20px;
-        min-width: 130px;
-      }
-
-      .stat-card .label {
+      .project-ysws-badge {
         font-size: 11px;
-        color: #888;
-        text-transform: uppercase;
-        letter-spacing: 0.06em;
+        background: var(--accent-soft);
+        color: var(--accent);
+        padding: 1px 6px;
+        border-radius: 4px;
+        font-weight: 500;
+      }
+      .project-hours {
+        font-size: 12px;
+        font-family: var(--mono);
+        color: var(--muted);
+        white-space: nowrap;
+      }
+      .project-desc {
+        font-size: 12px;
+        color: var(--muted);
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+      }
+      .project-links {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 1px;
+      }
+      .project-links a {
+        font-size: 11.5px;
+        color: var(--accent);
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 3px;
+      }
+      .project-links a:hover {
+        text-decoration: underline;
+      }
+      .project-links .sep {
+        color: var(--border);
+        font-size: 11px;
+      }
+
+      /* LOADING / EMPTY */
+      .state-msg {
+        text-align: center;
+        padding: 60px 20px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+      .state-msg strong {
+        display: block;
+        font-size: 16px;
+        color: var(--text);
         margin-bottom: 6px;
       }
 
-      .stat-card .value {
-        font-size: 22px;
-        font-weight: 600;
-        color: #111;
+      /* SCROLL SENTINEL */
+      #scroll-sentinel {
+        height: 20px;
       }
 
-      .stat-card .value.spent {
-        color: #b94040;
-      }
-      .stat-card .value.na {
-        color: #aaa;
-        font-size: 14px;
-        font-weight: 400;
+      /* YSWS no results */
+      .no-results {
+        padding: 30px 14px;
+        text-align: center;
+        color: var(--muted);
       }
 
-      /* Money column */
-      td.money,
-      th.money {
-        text-align: right;
-        font-variant-numeric: tabular-nums;
-      }
-
-      /* Cost badges */
-      .cost-green {
-        color: #1a6e35;
-        background: #d6f0df;
-        padding: 2px 8px;
-        border-radius: 4px;
-        font-size: 13px;
-        font-weight: 500;
-        display: inline-block;
-      }
-      .cost-yellow {
-        color: #7a5800;
-        background: #fef0c0;
-        padding: 2px 8px;
-        border-radius: 4px;
-        font-size: 13px;
-        font-weight: 500;
-        display: inline-block;
-      }
-      .cost-red {
-        color: #922;
-        background: #fde8e8;
-        padding: 2px 8px;
-        border-radius: 4px;
-        font-size: 13px;
-        font-weight: 500;
-        display: inline-block;
-      }
-      .cost-na {
-        color: #888;
-        font-size: 13px;
-      }
-
-      /* Back button */
-      .back-btn {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        margin-bottom: 20px;
-        padding: 7px 14px;
-        background: #fff;
-        border: 1px solid #ddd9d0;
-        border-radius: 6px;
-        font-size: 13px;
-        font-weight: 500;
-        color: #333;
-        cursor: pointer;
-        transition: background 0.15s;
-      }
-      .back-btn:hover {
-        background: #f2f0eb;
-      }
-
-      /* Screenshot */
-      .project-screenshot {
-        max-width: 180px;
-        max-height: 120px;
-        display: block;
-        border-radius: 4px;
-        border: 1px solid #e0ddd6;
-      }
-
-      /* Status / error */
-      #status {
-        color: #888;
-        font-size: 14px;
-        margin: 40px 0;
-      }
-      .error {
-        color: #b94040;
-      }
-
-      #list-view,
-      #detail-view {
-        display: none;
-      }
-      #list-view.active,
-      #detail-view.active {
-        display: block;
+      /* responsive */
+      @media (max-width: 600px) {
+        header {
+          gap: 14px;
+        }
+        main {
+          padding: 12px;
+        }
+        .project-card {
+          grid-template-columns: 64px 1fr;
+        }
+        .project-thumb,
+        .project-thumb-err {
+          width: 64px;
+          height: 64px;
+        }
       }
     </style>
   </head>
   <body>
-    <div class="page-header">
-      <h1>ysws & projects</h1>
-      <p id="status">Loading...</p>
-    </div>
-
-    <div id="list-view">
-      <div class="table-wrap">
-        <table id="ysws-table">
-          <thead>
-            <tr>
-              <th>YSWS Name</th>
-              <th class="sortable" data-col="1" data-dir="none">Ships</th>
-              <th class="sortable" data-col="2" data-dir="none">
-                Weighted Grants
-              </th>
-              <th class="sortable money" data-col="3" data-dir="none">
-                Spent / WG
-              </th>
-            </tr>
-          </thead>
-          <tbody id="ysws-tbody"></tbody>
-        </table>
+    <header>
+      <div class="logo">YSWS <span>Ships</span></div>
+      <div class="tabs">
+        <button class="tab-btn active" id="tab-ysws-btn" onclick="switchTab('ysws')">YSWSs</button>
+        <button class="tab-btn" id="tab-projects-btn" onclick="switchTab('projects')">Projects</button>
       </div>
-    </div>
+    </header>
 
-    <div id="detail-view">
-      <button class="back-btn" onclick="showList()">
-        ← Back to all YSWSes
-      </button>
-      <h2 id="detail-title" style="margin-bottom: 16px"></h2>
+    <div class="toolbar" id="toolbar"></div>
 
-      <div class="finance-cards" id="detail-stats"></div>
-
-      <div class="table-wrap">
-        <table id="projects-table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Screenshot</th>
-              <th>Made By</th>
-              <th class="sortable" data-col="3" data-dir="none">Hours</th>
-              <th>Source Code</th>
-              <th>Demo</th>
-              <th>Approved At</th>
-            </tr>
-          </thead>
-          <tbody id="projects-tbody"></tbody>
-        </table>
-      </div>
-    </div>
+    <main id="main-content">
+      <div class="state-msg"><strong>Loading…</strong>Fetching ysws_entries.json</div>
+    </main>
 
     <script>
-      let yswsMap = {};
-      let financesMap = {};
+      // ─── DATA ───────────────────────────────────────────────────────────────────
+      let allProjects = [];
+      let byYsws = {}; // ysws name → [projects]
+      let yswsList = []; // [{name, ships, wg}]
 
-      function getHours(val) {
-        if (Array.isArray(val)) return val[0] ?? 0;
-        return val ?? 0;
+      let currentTab = "ysws";
+      let currentYsws = null; // null = all projects
+
+      // pagination
+      let displayedCount = 0;
+      const PAGE_SIZE = 40;
+      let filteredProjects = [];
+      let observer = null;
+
+      // sort state
+      let ywswSort = { field: "wg", dir: -1 };
+      let projSort = { field: null, dir: -1 };
+
+      // search state
+      let searchQuery = "";
+
+      // ─── LOAD ────────────────────────────────────────────────────────────────────
+      fetch("ysws_entries.json")
+        .then((r) => {
+          if (!r.ok) throw new Error(r.status);
+          return r.json();
+        })
+        .then((data) => {
+          allProjects = Array.isArray(data) ? data : Object.values(data);
+          buildIndex();
+          renderTab();
+        })
+        .catch((err) => {
+          document.getElementById("main-content").innerHTML =
+            `<div class="state-msg"><strong>Could not load ysws_entries.json</strong>Make sure the file is in the same folder as this HTML file.<br><small style="font-family:monospace;color:#aaa">${err}</small></div>`;
+          document.getElementById("toolbar").innerHTML = "";
+        });
+
+      function buildIndex() {
+        byYsws = {};
+        allProjects.forEach((p) => {
+          const y = (p.ysws || "Unknown").trim();
+          if (!byYsws[y]) byYsws[y] = [];
+          byYsws[y].push(p);
+        });
+        yswsList = Object.entries(byYsws).map(([name, projs]) => ({
+          name,
+          ships: projs.length,
+          wg: projs.reduce((s, p) => s + (Number(p.hours) || 0), 0) / 10,
+        }));
       }
 
-      function parseGitHub(url) {
-        if (!url) return { user: null, repo: null };
-        const m = url.match(/github\.com\/([^\/]+)\/([^\/\s#?]+)/i);
-        if (m) return { user: m[1], repo: m[2].replace(/\.git$/, "") };
-        return { user: null, repo: null };
+      // ─── TAB SWITCH ──────────────────────────────────────────────────────────────
+      function switchTab(tab) {
+        currentTab = tab;
+        currentYsws = null;
+        searchQuery = "";
+        projSort = { field: null, dir: -1 };
+        updateTabButtons();
+        renderTab();
       }
 
-      function round(value, precision) {
-        return (
-          Math.round(value * Math.pow(10, precision || 0)) /
-          Math.pow(10, precision || 0)
-        );
+      function updateTabButtons() {
+        const yswsBtn = document.getElementById("tab-ysws-btn");
+        const projsBtn = document.getElementById("tab-projects-btn");
+        if (yswsBtn && projsBtn) {
+          yswsBtn.classList.toggle("active", currentTab === "ysws");
+          projsBtn.classList.toggle("active", currentTab === "projects");
+        }
       }
 
-      function formatMoney(val) {
-        if (val === null || val === undefined || isNaN(val)) return "—";
-        return (
-          "$" +
-          Number(val).toLocaleString("en-US", {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          })
-        );
+      function renderTab() {
+        if (currentTab === "ysws" && currentYsws === null) {
+          renderYswsView();
+        } else {
+          renderProjectView();
+        }
       }
 
-      function costClass(spentPerWG) {
-        if (spentPerWG === null || isNaN(spentPerWG)) return "cost-na";
-        if (spentPerWG > 100) return "cost-red";
-        if (spentPerWG > 85) return "cost-yellow";
-        return "cost-green";
+      // ─── YSWS VIEW ───────────────────────────────────────────────────────────────
+      function renderYswsView() {
+        renderToolbarYsws();
+        updateYswsList();
       }
 
-      function attachSortHandlers(tableId, getRowValue) {
-        const table = document.getElementById(tableId);
-        table.querySelectorAll("th.sortable").forEach((th) => {
-          th.addEventListener("click", () => {
-            const col = parseInt(th.dataset.col);
-            const nextDir = th.dataset.dir === "asc" ? "desc" : "asc";
-            table.querySelectorAll("th.sortable").forEach((h) => {
-              h.dataset.dir = "none";
-              h.classList.remove("sort-asc", "sort-desc");
-            });
-            th.dataset.dir = nextDir;
-            th.classList.add(nextDir === "asc" ? "sort-asc" : "sort-desc");
-            const rows = Array.from(table.querySelector("tbody").rows);
-            rows.sort((a, b) => {
-              const av = getRowValue(a, col);
-              const bv = getRowValue(b, col);
-              if (av === null && bv === null) return 0;
-              if (av === null) return 1;
-              if (bv === null) return -1;
-              return nextDir === "asc" ? av - bv : bv - av;
-            });
-            rows.forEach((r) => table.querySelector("tbody").appendChild(r));
-          });
+      function updateYswsList() {
+        const sorted = sortedYsws();
+        const filtered = filterYsws(sorted);
+        const main = document.getElementById("main-content");
+        if (filtered.length === 0) {
+          main.innerHTML = `<div class="state-msg"><strong>No YSWSs found</strong>Try a different search.</div>`;
+          return;
+        }
+        main.innerHTML = `
+    <table class="ysws-table">
+      <thead>
+        <tr>
+          <th>YSWS</th>
+          <th class="sortable" onclick="toggleYswsSort('ships')">Ships ${sortArrow("ysws", "ships")}</th>
+          <th class="sortable" onclick="toggleYswsSort('wg')">WG ${sortArrow("ysws", "wg")}</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${filtered
+          .map(
+            (y) => `
+          <tr class="ysws-row" onclick="openYsws('${y.name}')">
+            <td><span class="ysws-name">${esc(y.name)}</span></td>
+            <td><span class="num">${y.ships}</span></td>
+            <td><span class="num">${y.wg.toFixed(1)}</span></td>
+          </tr>
+        `,
+          )
+          .join("")}
+      </tbody>
+    </table>`;
+
+        const el = document.getElementById("ysws-count");
+        if (el) el.textContent = filtered.length + " of " + yswsList.length;
+      }
+
+      function renderToolbarYsws() {
+        if (document.getElementById("ysws-search-input")) return;
+
+        document.getElementById("toolbar").innerHTML = `
+    <div class="toolbar-left">
+      <span class="toolbar-title">YSWSs</span>
+      <span class="toolbar-count" id="ysws-count"></span>
+    </div>
+    <div class="search-wrap">
+      <svg class="search-icon" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6.5" cy="6.5" r="4.5"/><line x1="10.5" y1="10.5" x2="14" y2="14"/></svg>
+      <input type="search" id="ysws-search-input" placeholder="Search YSWSs…" value="${esc(searchQuery)}"
+        oninput="searchQuery=this.value; updateYswsList()">
+    </div>`;
+      }
+
+      function sortedYsws() {
+        return [...yswsList].sort((a, b) => {
+          const v = a[ywswSort.field] < b[ywswSort.field] ? -1 : a[ywswSort.field] > b[ywswSort.field] ? 1 : 0;
+          return v * ywswSort.dir;
         });
       }
 
-      function makeStatCard(label, value, cls) {
+      function filterYsws(list) {
+        if (!searchQuery.trim()) return list;
+        const q = searchQuery.toLowerCase();
+        return list.filter((y) => fuzzyMatch(y.name.toLowerCase(), q));
+      }
+
+      function toggleYswsSort(field) {
+        if (ywswSort.field === field) ywswSort.dir *= -1;
+        else {
+          ywswSort.field = field;
+          ywswSort.dir = -1;
+        }
+        updateYswsList();
+      }
+
+      function sortArrow(tab, field) {
+        const s = tab === "ysws" ? ywswSort : projSort;
+        if (s.field !== field) return `<span class="sort-indicator">↕</span>`;
+        return `<span class="sort-indicator active">${s.dir === -1 ? "↓" : "↑"}</span>`;
+      }
+
+      function openYsws(name) {
+        currentTab = "projects";
+        currentYsws = null;
+        searchQuery = `ysws:${name}`;
+        updateTabButtons();
+        renderProjectView();
+      }
+
+      // ─── PROJECT VIEW ────────────────────────────────────────────────────────────
+      function renderProjectView() {
+        renderToolbarProjects();
+        updateProjectList();
+      }
+
+      function updateProjectList() {
+        filteredProjects = getFilteredProjects();
+        displayedCount = 0;
+        document.getElementById("main-content").innerHTML =
+          `<div class="project-list" id="project-list"></div><div id="scroll-sentinel"></div>`;
+        loadMoreProjects();
+        setupObserver();
+      }
+
+      function renderToolbarProjects() {
+        const isFiltered = currentYsws !== null;
+        const title = isFiltered ? currentYsws : "All Projects";
+
+        // Always rebuild toolbar context to sync back button layout changes across states accurately
+        document.getElementById("toolbar").innerHTML = `
+    <div class="toolbar-left">
+      ${isFiltered ? `<button class="back-btn" onclick="backToYsws()">← Back</button>` : ""}
+      <span class="toolbar-title">${esc(title)}</span>
+      <span class="toolbar-count" id="proj-count">…</span>
+    </div>
+    <div class="search-wrap">
+      <svg class="search-icon" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6.5" cy="6.5" r="4.5"/><line x1="10.5" y1="10.5" x2="14" y2="14"/></svg>
+      <input type="search" id="proj-search-input" placeholder="Search projects… or field:value" value="${esc(searchQuery)}"
+        oninput="searchQuery=this.value; updateProjectList()">
+    </div>
+    <select onchange="setProjSort(this.value)">
+      <option value="">Sort: Default</option>
+      <option value="hours_desc" ${projSort.field === "hours" && projSort.dir === -1 ? "selected" : ""}>Hours: High → Low</option>
+      <option value="hours_asc" ${projSort.field === "hours" && projSort.dir === 1 ? "selected" : ""}>Hours: Low → High</option>
+    </select>
+    <div class="search-hint">Tip: <code>user:someuser</code> &nbsp; <code>desc:rust</code> &nbsp; <code>hours:&gt;20</code></div>`;
+      }
+
+      function backToYsws() {
+        currentYsws = null;
+        searchQuery = "";
+        renderYswsView();
+      }
+
+      function setProjSort(val) {
+        if (!val) {
+          projSort = { field: null, dir: -1 };
+        } else if (val === "hours_desc") projSort = { field: "hours", dir: -1 };
+        else projSort = { field: "hours", dir: 1 };
+        updateProjectList();
+      }
+
+      function getFilteredProjects() {
+        let list = currentYsws ? byYsws[currentYsws] || [] : allProjects;
+        if (searchQuery.trim()) list = searchProjects(list, searchQuery.trim());
+        if (projSort.field) {
+          list = [...list].sort((a, b) => {
+            const av = Number(a[projSort.field]) || 0;
+            const bv = Number(b[projSort.field]) || 0;
+            return (av - bv) * projSort.dir;
+          });
+        }
+        return list;
+      }
+
+      function loadMoreProjects() {
+        const list = document.getElementById("project-list");
+        if (!list) return;
+        const end = Math.min(displayedCount + PAGE_SIZE, filteredProjects.length);
+        for (let i = displayedCount; i < end; i++) {
+          list.appendChild(makeProjectCard(filteredProjects[i]));
+        }
+        displayedCount = end;
+        const countEl = document.getElementById("proj-count");
+        if (countEl) countEl.textContent = filteredProjects.length + (currentYsws ? "" : " projects");
+        if (displayedCount >= filteredProjects.length && filteredProjects.length === 0) {
+          list.innerHTML = `<div class="state-msg"><strong>No projects found</strong>Try adjusting your search.</div>`;
+        }
+      }
+
+      function setupObserver() {
+        if (observer) observer.disconnect();
+        const sentinel = document.getElementById("scroll-sentinel");
+        if (!sentinel) return;
+        observer = new IntersectionObserver(
+          (entries) => {
+            if (entries[0].isIntersecting && displayedCount < filteredProjects.length) {
+              loadMoreProjects();
+            }
+          },
+          { rootMargin: "200px" },
+        );
+        observer.observe(sentinel);
+      }
+
+      // ─── PROJECT CARD ─────────────────────────────────────────────────────────────
+      function makeProjectCard(p) {
         const card = document.createElement("div");
-        card.className = "stat-card";
-        const lbl = document.createElement("div");
-        lbl.className = "label";
-        lbl.textContent = label;
-        const val = document.createElement("div");
-        val.className = "value " + (cls || "");
-        val.textContent = value;
-        card.appendChild(lbl);
-        card.appendChild(val);
+        card.className = "project-card";
+
+        // screenshot
+        const imgWrap = document.createElement("div");
+        if (p.id) {
+          const img = document.createElement("img");
+          img.className = "project-thumb";
+          img.loading = "lazy";
+          img.alt = "";
+          img.src = `https://ships.hackclub.com/api/v1/screenshots/${p.id}`;
+          img.onerror = function () {
+            this.replaceWith(thumbErr());
+          };
+          imgWrap.appendChild(img);
+        } else {
+          imgWrap.appendChild(thumbErr());
+        }
+
+        // info
+        const info = document.createElement("div");
+        info.className = "project-info";
+
+        const name = repoName(p.code_url);
+        const user = ghUser(p);
+        const hours = Number(p.hours) || 0;
+        const yswsName = (p.ysws || "").trim();
+
+        const row1 = document.createElement("div");
+        row1.className = "project-row1";
+        row1.innerHTML = `
+    <span class="project-name">${esc(name)}</span>
+    ${user ? `<span class="project-user">@${esc(user)}</span>` : ""}
+    <div class="project-meta-right">
+      ${yswsName ? `<span class="project-ysws-badge">${esc(yswsName)}</span>` : ""}
+      <span class="project-hours">${hours}h</span>
+    </div>`;
+
+        const desc = document.createElement("div");
+        desc.className = "project-desc";
+        desc.title = p.description || "";
+        desc.textContent = p.description || "";
+
+        const links = document.createElement("div");
+        links.className = "project-links";
+        links.innerHTML = buildLinks(p);
+
+        info.appendChild(row1);
+        if (p.description) info.appendChild(desc);
+        info.appendChild(links);
+
+        card.appendChild(imgWrap);
+        card.appendChild(info);
         return card;
       }
 
-      function showList() {
-        document.getElementById("detail-view").classList.remove("active");
-        document.getElementById("list-view").classList.add("active");
-        history.pushState(null, "", window.location.pathname);
+      function thumbErr() {
+        const d = document.createElement("div");
+        d.className = "project-thumb-err";
+        d.textContent = "🖼";
+        return d;
       }
 
-      function showDetail(yswsName) {
-        const projects = yswsMap[yswsName] || [];
-        const totalHours = projects.reduce(
-          (sum, p) => sum + getHours(p.fields["Hours Spent"]),
-          0,
-        );
-        const weightedGrants = (totalHours / 10).toFixed(2);
-        const fin = financesMap[yswsName] || {};
-
-        document.getElementById("detail-title").textContent = yswsName;
-
-        const statsEl = document.getElementById("detail-stats");
-        statsEl.innerHTML = "";
-        statsEl.appendChild(makeStatCard("Ships", projects.length));
-        statsEl.appendChild(
-          makeStatCard("Weighted Grants", weightedGrants + " wg"),
-        );
-        if (fin.total_raised !== null && fin.total_raised !== undefined) {
-          statsEl.appendChild(
-            makeStatCard("Total Spent", formatMoney(fin.total_spent), "spent"),
+      function buildLinks(p) {
+        const parts = [];
+        if (p.code_url) {
+          let src = `<a href="${esc(p.code_url)}" target="_blank" rel="noopener">⌥ Source</a>`;
+          if (p.archived_repo)
+            src += ` <span class="sep">/</span> <a href="${esc(p.archived_repo)}" target="_blank" rel="noopener">Archive</a>`;
+          parts.push(src);
+        }
+        if (p.demo_url) parts.push(`<a href="${esc(p.demo_url)}" target="_blank" rel="noopener">▶ Demo</a>`);
+        if (p.archived_demo)
+          parts.push(`<a href="${esc(p.archived_demo)}" target="_blank" rel="noopener">📦 Demo archive</a>`);
+        if (p.slack_id && p.slack_id !== "null")
+          parts.push(
+            `<a href="https://hackclub.slack.com/team/${esc(p.slack_id)}" target="_blank" rel="noopener">Slack</a>`,
           );
-          statsEl.appendChild(
-            makeStatCard(
-              "Spending per WG",
-              formatMoney(fin.total_spent / (totalHours / 10)),
-              "spent",
-            ),
-          );
-        } else {
-          statsEl.appendChild(makeStatCard("Finances", "No data", "na"));
+        return parts.join('<span class="sep"> · </span>');
+      }
+
+      // ─── HELPERS ─────────────────────────────────────────────────────────────────
+      function repoName(url) {
+        if (!url) return "Unknown";
+        const m = url.replace(/\/$/, "").match(/\/([^\/]+)$/);
+        return m ? m[1] : url;
+      }
+
+      function ghUser(p) {
+        if (p.github_username && p.github_username !== "null") return p.github_username;
+        if (p.code_url) {
+          const m = p.code_url.match(/github\.com\/([^\/]+)/);
+          if (m) return m[1];
+        }
+        return "";
+      }
+
+      function esc(s) {
+        return String(s ?? "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
+      }
+
+      // ─── SEARCH ──────────────────────────────────────────────────────────────────
+      // Supports:
+      //   field:value  → exact/substring field filter
+      //   hours:>N hours:<N  → numeric compare
+      //   general text → fuzzy across name/user/desc/ysws
+
+      const FIELD_MAP = {
+        user: (p) => ghUser(p),
+        username: (p) => ghUser(p),
+        desc: (p) => p.description || "",
+        description: (p) => p.description || "",
+        name: (p) => repoName(p.code_url),
+        repo: (p) => repoName(p.code_url),
+        ysws: (p) => p.ysws || "",
+        hours: (p) => String(Number(p.hours) || 0),
+        country: (p) => p.country || "",
+        stars: (p) => String(p.github_stars || 0),
+      };
+
+      function searchProjects(list, query) {
+        // Parse out field: tokens
+        const tokens = query.split(/\s+/);
+        const fieldFilters = [];
+        const freeTokens = [];
+
+        tokens.forEach((tok) => {
+          const fm = tok.match(/^(\w+):(.+)$/);
+          if (fm && FIELD_MAP[fm[1].toLowerCase()]) {
+            fieldFilters.push({ field: fm[1].toLowerCase(), val: fm[2] });
+          } else {
+            freeTokens.push(tok.toLowerCase());
+          }
+        });
+
+        let results = list;
+
+        // Apply strict field filters
+        fieldFilters.forEach(({ field, val }) => {
+          const getter = FIELD_MAP[field];
+          // Numeric comparison
+          const numMatch = val.match(/^([<>]=?)(\d+(?:\.\d+)?)$/);
+          if (numMatch) {
+            const op = numMatch[1],
+              n = parseFloat(numMatch[2]);
+            results = results.filter((p) => {
+              const v = parseFloat(getter(p));
+              if (op === ">") return v > n;
+              if (op === ">=") return v >= n;
+              if (op === "<") return v < n;
+              if (op === "<=") return v <= n;
+              return v === n;
+            });
+          } else {
+            const v = val.toLowerCase();
+            results = results.filter((p) => getter(p).toLowerCase().includes(v));
+          }
+        });
+
+        // Fuzzy free text
+        if (freeTokens.length > 0) {
+          const freeQ = freeTokens.join(" ");
+          const scored = results
+            .map((p) => {
+              const haystack = [repoName(p.code_url), ghUser(p), p.description || "", p.ysws || "", p.country || ""]
+                .join(" ")
+                .toLowerCase();
+              return { p, score: fuzzyScore(haystack, freeQ) };
+            })
+            .filter((x) => x.score > 0);
+          scored.sort((a, b) => b.score - a.score);
+          results = scored.map((x) => x.p);
         }
 
-        const tbody = document.getElementById("projects-tbody");
-        tbody.innerHTML = "";
-        document
-          .querySelectorAll("#projects-table th.sortable")
-          .forEach((h) => {
-            h.dataset.dir = "none";
-            h.classList.remove("sort-asc", "sort-desc");
-          });
-
-        projects.forEach((p) => {
-          const f = p.fields;
-          const hours = getHours(f["Hours Spent"]);
-          const codeURL = f["Code URL"] || "";
-          const playURL = f["Playable URL"] || "";
-          const approvedAt = f["Approved At"] || "";
-          const screenshot = f["Screenshot"] && f["Screenshot"][0];
-          const { user, repo } = parseGitHub(codeURL);
-          const name = repo || codeURL || p.id;
-          const madeBy = user || "—";
-
-          const tr = document.createElement("tr");
-          tr.dataset.hours = hours;
-
-          const tdName = document.createElement("td");
-          if (name.length > 23) {
-            tdName.textContent = name.substring(0, 20) + "...";
-            tdName.title = name;
-            tdName.style.cursor = "pointer";
-            tdName.onclick = () =>
-              navigator.clipboard
-                .writeText(name)
-                .catch(() => alert("Name: " + name));
-          } else {
-            tdName.textContent = name;
-          }
-          tr.appendChild(tdName);
-
-          const tdImg = document.createElement("td");
-          if (screenshot) {
-            const img = document.createElement("img");
-            img.src = screenshot.thumbnails?.large?.url ?? screenshot.url;
-            img.alt = "screenshot";
-            img.className = "project-screenshot";
-            tdImg.appendChild(img);
-          } else {
-            tdImg.textContent = "—";
-            tdImg.style.color = "#aaa";
-          }
-          tr.appendChild(tdImg);
-
-          const tdBy = document.createElement("td");
-          if (madeBy.length > 23) {
-            tdBy.textContent = madeBy.substring(0, 20) + "...";
-            tdBy.title = madeBy;
-            tdBy.style.cursor = "pointer";
-            tdBy.onclick = () =>
-              navigator.clipboard
-                .writeText(madeBy)
-                .catch(() => alert("Made by: " + madeBy));
-          } else {
-            tdBy.textContent = madeBy;
-          }
-          tr.appendChild(tdBy);
-
-          const tdHours = document.createElement("td");
-          tdHours.textContent = round(hours, 2);
-          tr.appendChild(tdHours);
-
-          const tdCode = document.createElement("td");
-          if (codeURL) {
-            const a = document.createElement("a");
-            a.href = codeURL;
-            a.textContent = "Source";
-            a.target = "_blank";
-            tdCode.appendChild(a);
-          } else {
-            tdCode.textContent = "—";
-            tdCode.style.color = "#aaa";
-          }
-          tr.appendChild(tdCode);
-
-          const tdPlay = document.createElement("td");
-          if (playURL) {
-            const a = document.createElement("a");
-            a.href = playURL;
-            a.textContent = "Demo";
-            a.target = "_blank";
-            tdPlay.appendChild(a);
-          } else {
-            tdPlay.textContent = "—";
-            tdPlay.style.color = "#aaa";
-          }
-          tr.appendChild(tdPlay);
-
-          const tdApproved = document.createElement("td");
-          tdApproved.textContent = approvedAt;
-          tdApproved.style.color = "#666";
-          tdApproved.style.fontSize = "13px";
-          tr.appendChild(tdApproved);
-
-          tbody.appendChild(tr);
-        });
-
-        document.getElementById("list-view").classList.remove("active");
-        document.getElementById("detail-view").classList.add("active");
-        history.pushState(
-          { ysws: yswsName },
-          "",
-          "#" + encodeURIComponent(yswsName),
-        );
-
-        attachSortHandlers("projects-table", (row, col) => {
-          if (col === 3) return parseFloat(row.dataset.hours) || 0;
-          return 0;
-        });
+        return results;
       }
 
-      function renderList() {
-        const tbody = document.getElementById("ysws-tbody");
-        tbody.innerHTML = "";
-        const names = Object.keys(yswsMap).sort();
-        names.forEach((name) => {
-          const projects = yswsMap[name];
-          const totalHours = projects.reduce(
-            (sum, p) => sum + getHours(p.fields["Hours Spent"]),
-            0,
-          );
-          const weightedGrants = parseFloat((totalHours / 10).toFixed(2));
-          const fin = financesMap[name] || {};
-          const spent =
-            fin.total_spent !== undefined && fin.total_spent !== null
-              ? fin.total_spent
-              : null;
-          const spentPerWG = spent !== null ? spent / (totalHours / 10) : null;
+      function fuzzyMatch(str, q) {
+        return fuzzyScore(str, q) > 0;
+      }
 
-          const tr = document.createElement("tr");
-          tr.className = "ysws-row";
-          tr.dataset.count = projects.length;
-          tr.dataset.grants = weightedGrants;
-          tr.dataset.spentPerWG = spentPerWG !== null ? spentPerWG : "";
-          tr.addEventListener("click", () => showDetail(name));
-
-          const tdName = document.createElement("td");
-          tdName.textContent = name;
-          tr.appendChild(tdName);
-
-          const tdCount = document.createElement("td");
-          tdCount.textContent = projects.length;
-          tr.appendChild(tdCount);
-
-          const tdGrants = document.createElement("td");
-          tdGrants.textContent = weightedGrants.toFixed(2);
-          tr.appendChild(tdGrants);
-
-          const tdSpentPerWG = document.createElement("td");
-          tdSpentPerWG.className = "money";
-          if (spentPerWG !== null && !isNaN(spentPerWG)) {
-            const badge = document.createElement("span");
-            badge.className = costClass(spentPerWG);
-            badge.textContent = formatMoney(spentPerWG);
-            tdSpentPerWG.appendChild(badge);
+      function fuzzyScore(str, q) {
+        if (!q) return 1;
+        // Exact substring → high score
+        if (str.includes(q)) return 100;
+        // All words present
+        const words = q.split(/\s+/);
+        if (words.every((w) => str.includes(w))) return 80;
+        // Character sequence fuzzy
+        let qi = 0;
+        let score = 0;
+        let consecutive = 0;
+        for (let si = 0; si < str.length && qi < q.length; si++) {
+          if (str[si] === q[qi]) {
+            qi++;
+            consecutive++;
+            score += consecutive;
           } else {
-            tdSpentPerWG.innerHTML = '<span class="cost-na">—</span>';
+            consecutive = 0;
           }
-          tr.appendChild(tdSpentPerWG);
-
-          tbody.appendChild(tr);
-        });
-
-        document.getElementById("status").style.display = "none";
-        document.getElementById("list-view").classList.add("active");
-
-        attachSortHandlers("ysws-table", (row, col) => {
-          if (col === 1) return parseFloat(row.dataset.count) || 0;
-          if (col === 2) return parseFloat(row.dataset.grants) || 0;
-          if (col === 3)
-            return row.dataset.spentPerWG !== ""
-              ? parseFloat(row.dataset.spentPerWG)
-              : null;
-          return 0;
-        });
+        }
+        if (qi < q.length) return 0; // not all chars matched
+        return score;
       }
-
-      function handleHash() {
-        const hash = decodeURIComponent(window.location.hash.slice(1));
-        if (hash && yswsMap[hash]) showDetail(hash);
-        else if (Object.keys(yswsMap).length > 0) showList();
-      }
-
-      window.addEventListener("popstate", handleHash);
-
-      const projectsPromise = fetch("Approved Projects.json").then((r) => {
-        if (!r.ok) throw new Error("Failed to load: " + r.status);
-        return r.json();
-      });
-
-      const financesPromise = fetch("ysws_finances.json")
-        .then((r) => (r.ok ? r.json() : {}))
-        .catch(() => ({}));
-
-      Promise.all([projectsPromise, financesPromise])
-        .then(([projects, finances]) => {
-          financesMap = finances;
-          projects.forEach((project) => {
-            const names = project.fields["YSWS–Name"] || ["Unknown"];
-            const name = names[0];
-            if (!yswsMap[name]) yswsMap[name] = [];
-            yswsMap[name].push(project);
-          });
-          renderList();
-          handleHash();
-        })
-        .catch((err) => {
-          const status = document.getElementById("status");
-          status.textContent = "Error loading data: " + err.message;
-          status.className = "error";
-        });
     </script>
   </body>
 </html>
