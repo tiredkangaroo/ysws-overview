@@ -1,0 +1,38 @@
+name: Fetch YSWS Entries
+
+on:
+  schedule:
+    # Runs at the start of every hour
+    - cron: "0 * * * *"
+  workflow_dispatch: # Allows you to manually trigger the workflow from the Actions tab
+
+jobs:
+  fetch-and-commit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Fetch JSON API Data
+        run: |
+          # --connect-timeout 60: gives the connection up to 60 seconds to establish
+          # --retry 3: retries up to 3 times if there are transient network failures
+          # -L: follows any redirects
+          # -f: fails silently on HTTP errors so the script doesn't save an error page
+          curl --connect-timeout 60 --retry 3 -L -f "https://ships.hackclub.com/api/v1/ysws_entries?all=true" -o ysws_entries.json
+
+      - name: Commit and push if changes exist
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+          # Check if the file changed; if not, git add and commit will be skipped
+          git add ysws_entries.json
+
+          if git diff --staged --quiet; then
+            echo "No changes detected in ysws_entries.json. Skipping commit."
+          else
+            git commit -m "chore: auto-update ysws_entries.json"
+            git push
+          fi
