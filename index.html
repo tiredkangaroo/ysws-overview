@@ -12,7 +12,6 @@
         margin: 0;
         padding: 0;
       }
-
       :root {
         --bg: #f7f7f5;
         --surface: #ffffff;
@@ -25,7 +24,6 @@
         --font: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
         --mono: "SF Mono", "Fira Code", "Cascadia Code", monospace;
       }
-
       body {
         font-family: var(--font);
         background: var(--bg);
@@ -34,7 +32,6 @@
         line-height: 1.5;
         min-height: 100vh;
       }
-
       /* HEADER */
       header {
         background: var(--surface);
@@ -58,7 +55,6 @@
       .logo span {
         color: var(--accent);
       }
-
       /* TABS */
       .tabs {
         display: flex;
@@ -86,7 +82,6 @@
         background: #f0f0ed;
         color: var(--text);
       }
-
       /* TOOLBAR */
       .toolbar {
         padding: 12px 20px;
@@ -139,7 +134,6 @@
         border-radius: 10px;
         white-space: nowrap;
       }
-
       .search-wrap {
         position: relative;
         flex: 1;
@@ -169,7 +163,6 @@
         border-color: #aaa;
         background: #fff;
       }
-
       select {
         border: 1px solid var(--border);
         border-radius: var(--radius);
@@ -187,7 +180,6 @@
       select:focus {
         border-color: #aaa;
       }
-
       /* SEARCH HINT */
       .search-hint {
         width: 100%;
@@ -202,14 +194,12 @@
         padding: 1px 4px;
         border-radius: 3px;
       }
-
       /* MAIN */
       main {
         padding: 16px 20px;
         max-width: 1200px;
         margin: 0 auto;
       }
-
       /* YSWS TABLE */
       .ysws-table {
         width: 100%;
@@ -245,7 +235,6 @@
         opacity: 1;
         color: var(--accent);
       }
-
       .ysws-table td {
         padding: 9px 14px;
         border-bottom: 1px solid #f0f0ed;
@@ -272,14 +261,12 @@
         font-family: var(--mono);
         font-size: 12.5px;
       }
-
       /* PROJECT GRID */
       .project-list {
         display: flex;
         flex-direction: column;
         gap: 8px;
       }
-
       .project-card {
         background: var(--surface);
         border: 1px solid var(--border);
@@ -292,7 +279,6 @@
       .project-card:hover {
         border-color: #ccc;
       }
-
       .project-thumb {
         width: 80px;
         height: 68px;
@@ -313,7 +299,6 @@
         font-size: 22px;
         flex-shrink: 0;
       }
-
       .project-info {
         padding: 8px 12px;
         display: flex;
@@ -389,7 +374,6 @@
         color: var(--border);
         font-size: 11px;
       }
-
       /* LOADING / EMPTY */
       .state-msg {
         text-align: center;
@@ -403,19 +387,16 @@
         color: var(--text);
         margin-bottom: 6px;
       }
-
       /* SCROLL SENTINEL */
       #scroll-sentinel {
         height: 20px;
       }
-
       /* YSWS no results */
       .no-results {
         padding: 30px 14px;
         text-align: center;
         color: var(--muted);
       }
-
       /* responsive */
       @media (max-width: 600px) {
         header {
@@ -443,35 +424,27 @@
         <button class="tab-btn" id="tab-projects-btn" onclick="switchTab('projects')">Projects</button>
       </div>
     </header>
-
     <div class="toolbar" id="toolbar"></div>
-
     <main id="main-content">
       <div class="state-msg"><strong>Loading…</strong>Fetching ysws_entries.json</div>
     </main>
-
     <script>
       // ─── DATA ───────────────────────────────────────────────────────────────────
       let allProjects = [];
       let byYsws = {}; // ysws name → [projects]
-      let yswsList = []; // [{name, ships, wg}]
-
+      let yswsList = []; // [{name, ships, wg, avg_wg_ship}]
       let currentTab = "ysws";
       let currentYsws = null; // null = all projects
-
       // pagination
       let displayedCount = 0;
       const PAGE_SIZE = 40;
       let filteredProjects = [];
       let observer = null;
-
       // sort state
       let ywswSort = { field: "wg", dir: -1 };
       let projSort = { field: null, dir: -1 };
-
       // search state
       let searchQuery = "";
-
       // ─── LOAD ────────────────────────────────────────────────────────────────────
       fetch("ysws_entries.json")
         .then((r) => {
@@ -488,7 +461,6 @@
             `<div class="state-msg"><strong>Could not load ysws_entries.json</strong>Make sure the file is in the same folder as this HTML file.<br><small style="font-family:monospace;color:#aaa">${err}</small></div>`;
           document.getElementById("toolbar").innerHTML = "";
         });
-
       function buildIndex() {
         byYsws = {};
         allProjects.forEach((p) => {
@@ -496,13 +468,17 @@
           if (!byYsws[y]) byYsws[y] = [];
           byYsws[y].push(p);
         });
-        yswsList = Object.entries(byYsws).map(([name, projs]) => ({
-          name,
-          ships: projs.length,
-          wg: projs.reduce((s, p) => s + (Number(p.hours) || 0), 0) / 10,
-        }));
+        yswsList = Object.entries(byYsws).map(([name, projs]) => {
+          const totalShips = projs.length;
+          const totalWg = projs.reduce((s, p) => s + (Number(p.hours) || 0), 0) / 10;
+          return {
+            name,
+            ships: totalShips,
+            wg: totalWg,
+            avg_wg_ship: totalShips > 0 ? totalWg / totalShips : 0,
+          };
+        });
       }
-
       // ─── TAB SWITCH ──────────────────────────────────────────────────────────────
       function switchTab(tab) {
         currentTab = tab;
@@ -512,7 +488,6 @@
         updateTabButtons();
         renderTab();
       }
-
       function updateTabButtons() {
         const yswsBtn = document.getElementById("tab-ysws-btn");
         const projsBtn = document.getElementById("tab-projects-btn");
@@ -521,7 +496,6 @@
           projsBtn.classList.toggle("active", currentTab === "projects");
         }
       }
-
       function renderTab() {
         if (currentTab === "ysws" && currentYsws === null) {
           renderYswsView();
@@ -529,13 +503,11 @@
           renderProjectView();
         }
       }
-
       // ─── YSWS VIEW ───────────────────────────────────────────────────────────────
       function renderYswsView() {
         renderToolbarYsws();
         updateYswsList();
       }
-
       function updateYswsList() {
         const sorted = sortedYsws();
         const filtered = filterYsws(sorted);
@@ -551,6 +523,7 @@
           <th>YSWS</th>
           <th class="sortable" onclick="toggleYswsSort('ships')">Ships ${sortArrow("ysws", "ships")}</th>
           <th class="sortable" onclick="toggleYswsSort('wg')">WG ${sortArrow("ysws", "wg")}</th>
+          <th class="sortable" onclick="toggleYswsSort('avg_wg_ship')">(Avg) WG/Ship ${sortArrow("ysws", "avg_wg_ship")}</th>
         </tr>
       </thead>
       <tbody>
@@ -561,20 +534,18 @@
             <td><span class="ysws-name">${esc(y.name)}</span></td>
             <td><span class="num">${y.ships}</span></td>
             <td><span class="num">${y.wg.toFixed(1)}</span></td>
+            <td><span class="num">${y.avg_wg_ship.toFixed(2)}</span></td>
           </tr>
         `,
           )
           .join("")}
       </tbody>
     </table>`;
-
         const el = document.getElementById("ysws-count");
         if (el) el.textContent = filtered.length + " of " + yswsList.length;
       }
-
       function renderToolbarYsws() {
         if (document.getElementById("ysws-search-input")) return;
-
         document.getElementById("toolbar").innerHTML = `
     <div class="toolbar-left">
       <span class="toolbar-title">YSWSs</span>
@@ -586,20 +557,17 @@
         oninput="searchQuery=this.value; updateYswsList()">
     </div>`;
       }
-
       function sortedYsws() {
         return [...yswsList].sort((a, b) => {
           const v = a[ywswSort.field] < b[ywswSort.field] ? -1 : a[ywswSort.field] > b[ywswSort.field] ? 1 : 0;
           return v * ywswSort.dir;
         });
       }
-
       function filterYsws(list) {
         if (!searchQuery.trim()) return list;
         const q = searchQuery.toLowerCase();
         return list.filter((y) => fuzzyMatch(y.name.toLowerCase(), q));
       }
-
       function toggleYswsSort(field) {
         if (ywswSort.field === field) ywswSort.dir *= -1;
         else {
@@ -608,13 +576,11 @@
         }
         updateYswsList();
       }
-
       function sortArrow(tab, field) {
         const s = tab === "ysws" ? ywswSort : projSort;
         if (s.field !== field) return `<span class="sort-indicator">↕</span>`;
         return `<span class="sort-indicator active">${s.dir === -1 ? "↓" : "↑"}</span>`;
       }
-
       function openYsws(name) {
         currentTab = "projects";
         currentYsws = null;
@@ -622,13 +588,11 @@
         updateTabButtons();
         renderProjectView();
       }
-
       // ─── PROJECT VIEW ────────────────────────────────────────────────────────────
       function renderProjectView() {
         renderToolbarProjects();
         updateProjectList();
       }
-
       function updateProjectList() {
         filteredProjects = getFilteredProjects();
         displayedCount = 0;
@@ -637,11 +601,9 @@
         loadMoreProjects();
         setupObserver();
       }
-
       function renderToolbarProjects() {
         const isFiltered = currentYsws !== null;
         const title = isFiltered ? currentYsws : "All Projects";
-
         // Always rebuild toolbar context to sync back button layout changes across states accurately
         document.getElementById("toolbar").innerHTML = `
     <div class="toolbar-left">
@@ -661,13 +623,11 @@
     </select>
     <div class="search-hint">Tip: <code>user:someuser</code> &nbsp; <code>desc:rust</code> &nbsp; <code>hours:&gt;20</code></div>`;
       }
-
       function backToYsws() {
         currentYsws = null;
         searchQuery = "";
         renderYswsView();
       }
-
       function setProjSort(val) {
         if (!val) {
           projSort = { field: null, dir: -1 };
@@ -675,7 +635,6 @@
         else projSort = { field: "hours", dir: 1 };
         updateProjectList();
       }
-
       function getFilteredProjects() {
         let list = currentYsws ? byYsws[currentYsws] || [] : allProjects;
         if (searchQuery.trim()) list = searchProjects(list, searchQuery.trim());
@@ -688,7 +647,6 @@
         }
         return list;
       }
-
       function loadMoreProjects() {
         const list = document.getElementById("project-list");
         if (!list) return;
@@ -703,7 +661,6 @@
           list.innerHTML = `<div class="state-msg"><strong>No projects found</strong>Try adjusting your search.</div>`;
         }
       }
-
       function setupObserver() {
         if (observer) observer.disconnect();
         const sentinel = document.getElementById("scroll-sentinel");
@@ -718,12 +675,10 @@
         );
         observer.observe(sentinel);
       }
-
       // ─── PROJECT CARD ─────────────────────────────────────────────────────────────
       function makeProjectCard(p) {
         const card = document.createElement("div");
         card.className = "project-card";
-
         // screenshot
         const imgWrap = document.createElement("div");
         if (p.id) {
@@ -739,16 +694,13 @@
         } else {
           imgWrap.appendChild(thumbErr());
         }
-
         // info
         const info = document.createElement("div");
         info.className = "project-info";
-
         const name = repoName(p.code_url);
         const user = ghUser(p);
         const hours = Number(p.hours) || 0;
         const yswsName = (p.ysws || "").trim();
-
         const row1 = document.createElement("div");
         row1.className = "project-row1";
         row1.innerHTML = `
@@ -758,32 +710,26 @@
       ${yswsName ? `<span class="project-ysws-badge">${esc(yswsName)}</span>` : ""}
       <span class="project-hours">${hours}h</span>
     </div>`;
-
         const desc = document.createElement("div");
         desc.className = "project-desc";
         desc.title = p.description || "";
         desc.textContent = p.description || "";
-
         const links = document.createElement("div");
         links.className = "project-links";
         links.innerHTML = buildLinks(p);
-
         info.appendChild(row1);
         if (p.description) info.appendChild(desc);
         info.appendChild(links);
-
         card.appendChild(imgWrap);
         card.appendChild(info);
         return card;
       }
-
       function thumbErr() {
         const d = document.createElement("div");
         d.className = "project-thumb-err";
         d.textContent = "🖼";
         return d;
       }
-
       function buildLinks(p) {
         const parts = [];
         if (p.code_url) {
@@ -801,14 +747,12 @@
           );
         return parts.join('<span class="sep"> · </span>');
       }
-
       // ─── HELPERS ─────────────────────────────────────────────────────────────────
       function repoName(url) {
         if (!url) return "Unknown";
         const m = url.replace(/\/$/, "").match(/\/([^\/]+)$/);
         return m ? m[1] : url;
       }
-
       function ghUser(p) {
         if (p.github_username && p.github_username !== "null") return p.github_username;
         if (p.code_url) {
@@ -817,7 +761,6 @@
         }
         return "";
       }
-
       function esc(s) {
         return String(s ?? "")
           .replace(/&/g, "&amp;")
@@ -825,13 +768,11 @@
           .replace(/>/g, "&gt;")
           .replace(/"/g, "&quot;");
       }
-
       // ─── SEARCH ──────────────────────────────────────────────────────────────────
       // Supports:
       //   field:value  → exact/substring field filter
       //   hours:>N hours:<N  → numeric compare
       //   general text → fuzzy across name/user/desc/ysws
-
       const FIELD_MAP = {
         user: (p) => ghUser(p),
         username: (p) => ghUser(p),
@@ -844,13 +785,11 @@
         country: (p) => p.country || "",
         stars: (p) => String(p.github_stars || 0),
       };
-
       function searchProjects(list, query) {
         // Parse out field: tokens
         const tokens = query.split(/\s+/);
         const fieldFilters = [];
         const freeTokens = [];
-
         tokens.forEach((tok) => {
           const fm = tok.match(/^(\w+):(.+)$/);
           if (fm && FIELD_MAP[fm[1].toLowerCase()]) {
@@ -859,9 +798,7 @@
             freeTokens.push(tok.toLowerCase());
           }
         });
-
         let results = list;
-
         // Apply strict field filters
         fieldFilters.forEach(({ field, val }) => {
           const getter = FIELD_MAP[field];
@@ -883,7 +820,6 @@
             results = results.filter((p) => getter(p).toLowerCase().includes(v));
           }
         });
-
         // Fuzzy free text
         if (freeTokens.length > 0) {
           const freeQ = freeTokens.join(" ");
@@ -898,14 +834,11 @@
           scored.sort((a, b) => b.score - a.score);
           results = scored.map((x) => x.p);
         }
-
         return results;
       }
-
       function fuzzyMatch(str, q) {
         return fuzzyScore(str, q) > 0;
       }
-
       function fuzzyScore(str, q) {
         if (!q) return 1;
         // Exact substring → high score
