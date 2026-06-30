@@ -697,6 +697,9 @@
         // info
         const info = document.createElement("div");
         info.className = "project-info";
+        info.onclick = function () {
+          console.log(p);
+        };
         const name = repoName(p.code_url);
         const user = ghUser(p);
         const hours = Number(p.hours) || 0;
