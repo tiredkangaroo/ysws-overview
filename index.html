@@ -134,6 +134,15 @@
         border-radius: 10px;
         white-space: nowrap;
       }
+      .category-badge {
+        font-size: 11px;
+        color: var(--accent);
+        background: var(--accent-soft);
+        padding: 2px 8px;
+        border-radius: 10px;
+        white-space: nowrap;
+        font-weight: 500;
+      }
       .search-wrap {
         position: relative;
         flex: 1;
@@ -429,6 +438,20 @@
       <div class="state-msg"><strong>Loading…</strong>Fetching ysws_entries.json</div>
     </main>
     <script>
+      // ─── CATEGORY FILTER (from URL) ─────────────────────────────────────────────
+      // ?category=Name1,Name2  → restricts the entire dashboard to those YSWSs.
+      // Case-insensitive, comma-separated, optional.
+      function getCategoryFilter() {
+        const params = new URLSearchParams(window.location.search);
+        const raw = params.get("category");
+        if (!raw) return null;
+        const names = raw
+          .split(",")
+          .map((s) => s.trim().toLowerCase())
+          .filter(Boolean);
+        return names.length ? new Set(names) : null;
+      }
+      const categoryFilter = getCategoryFilter();
       // ─── DATA ───────────────────────────────────────────────────────────────────
       let allProjects = [];
       let byYsws = {}; // ysws name → [projects]
@@ -453,6 +476,9 @@
         })
         .then((data) => {
           allProjects = Array.isArray(data) ? data : Object.values(data);
+          if (categoryFilter) {
+            allProjects = allProjects.filter((p) => categoryFilter.has((p.ysws || "").trim().toLowerCase()));
+          }
           buildIndex();
           renderTab();
         })
@@ -503,6 +529,12 @@
           renderProjectView();
         }
       }
+      // ─── CATEGORY BADGE (shown in toolbars when a category filter is active) ────
+      function categoryBadgeHtml() {
+        if (!categoryFilter) return "";
+        const names = [...categoryFilter].join(", ");
+        return `<span class="category-badge" title="Filtered by URL ?category=">Category: ${esc(names)}</span>`;
+      }
       // ─── YSWS VIEW ───────────────────────────────────────────────────────────────
       function renderYswsView() {
         renderToolbarYsws();
@@ -550,6 +582,7 @@
     <div class="toolbar-left">
       <span class="toolbar-title">YSWSs</span>
       <span class="toolbar-count" id="ysws-count"></span>
+      ${categoryBadgeHtml()}
     </div>
     <div class="search-wrap">
       <svg class="search-icon" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6.5" cy="6.5" r="4.5"/><line x1="10.5" y1="10.5" x2="14" y2="14"/></svg>
@@ -610,6 +643,7 @@
       ${isFiltered ? `<button class="back-btn" onclick="backToYsws()">← Back</button>` : ""}
       <span class="toolbar-title">${esc(title)}</span>
       <span class="toolbar-count" id="proj-count">…</span>
+      ${categoryBadgeHtml()}
     </div>
     <div class="search-wrap">
       <svg class="search-icon" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6.5" cy="6.5" r="4.5"/><line x1="10.5" y1="10.5" x2="14" y2="14"/></svg>
