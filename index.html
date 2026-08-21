@@ -172,6 +172,23 @@
         border-color: #aaa;
         background: #fff;
       }
+      input[type="date"] {
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 5px 9px;
+        font-family: var(--font);
+        font-size: 12.5px;
+        background: var(--bg);
+        color: var(--text);
+        outline: none;
+      }
+      input[type="date"]:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      input[type="date"]:focus {
+        border-color: #aaa;
+      }
       select {
         border: 1px solid var(--border);
         border-radius: var(--radius);
@@ -188,6 +205,18 @@
       }
       select:focus {
         border-color: #aaa;
+      }
+      .toolbar-checkbox {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 12.5px;
+        color: var(--muted);
+        white-space: nowrap;
+        cursor: pointer;
+      }
+      .toolbar-checkbox input {
+        cursor: pointer;
       }
       /* SEARCH HINT */
       .search-hint {
@@ -411,6 +440,43 @@
         color: var(--border);
         font-size: 11px;
       }
+      /* CHART (Updates tab) */
+      .chart-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 16px 16px 6px;
+        position: relative;
+      }
+      .chart-card svg text {
+        font-family: var(--mono);
+      }
+      .chart-point {
+        cursor: pointer;
+      }
+      .chart-tooltip {
+        position: absolute;
+        display: none;
+        pointer-events: none;
+        background: var(--text);
+        color: #fff;
+        font-size: 12px;
+        padding: 4px 9px;
+        border-radius: var(--radius);
+        white-space: nowrap;
+        transform: translate(-50%, calc(-100% - 12px));
+        z-index: 50;
+      }
+      .chart-tooltip span {
+        opacity: 0.7;
+        margin-right: 8px;
+      }
+      .updates-list-header {
+        margin: 16px 0 8px;
+        font-weight: 600;
+        font-size: 13px;
+        color: var(--muted);
+      }
       /* LOADING / EMPTY */
       .state-msg {
         text-align: center;
@@ -425,7 +491,8 @@
         margin-bottom: 6px;
       }
       /* SCROLL SENTINEL */
-      #scroll-sentinel {
+      #scroll-sentinel,
+      #updates-scroll-sentinel {
         height: 20px;
       }
       /* YSWS no results */
@@ -463,6 +530,7 @@
       <div class="tabs">
         <button class="tab-btn active" id="tab-ysws-btn" onclick="switchTab('ysws')">YSWSs</button>
         <button class="tab-btn" id="tab-projects-btn" onclick="switchTab('projects')">Projects</button>
+        <button class="tab-btn" id="tab-updates-btn" onclick="switchTab('updates')">Updates</button>
       </div>
     </header>
     <div class="toolbar" id="toolbar"></div>
@@ -490,7 +558,7 @@
       let yswsList = []; // [{name, ships, wg, avg_wg_ship}]
       let currentTab = "ysws";
       let currentYsws = null; // null = all projects
-      // pagination
+      // pagination (Projects tab)
       let displayedCount = 0;
       const PAGE_SIZE = 40;
       let filteredProjects = [];
@@ -500,6 +568,16 @@
       let projSort = { field: null, dir: -1 };
       // search state
       let searchQuery = "";
+      // ─── UPDATES TAB STATE ───────────────────────────────────────────────────────
+      let updatesMetric = "ships"; // 'ships' | 'wg'
+      let updatesInterval = "auto"; // 'auto' | 'day' | 'week' | 'month' | 'year'
+      let updatesYsws = ""; // '' = all YSWSs
+      let updatesAllTime = true;
+      let updatesFrom = null; // unix seconds, inclusive
+      let updatesTo = null; // unix seconds, inclusive
+      let updatesFilteredProjects = [];
+      let updatesDisplayedCount = 0;
+      let updatesObserver = null;
       // ─── LOAD ────────────────────────────────────────────────────────────────────
       fetch("ysws_entries.json")
         .then((r) => {
@@ -549,14 +627,18 @@
       function updateTabButtons() {
         const yswsBtn = document.getElementById("tab-ysws-btn");
         const projsBtn = document.getElementById("tab-projects-btn");
-        if (yswsBtn && projsBtn) {
+        const updatesBtn = document.getElementById("tab-updates-btn");
+        if (yswsBtn && projsBtn && updatesBtn) {
           yswsBtn.classList.toggle("active", currentTab === "ysws");
           projsBtn.classList.toggle("active", currentTab === "projects");
+          updatesBtn.classList.toggle("active", currentTab === "updates");
         }
       }
       function renderTab() {
         if (currentTab === "ysws" && currentYsws === null) {
           renderYswsView();
+        } else if (currentTab === "updates") {
+          renderUpdatesView();
         } else {
           renderProjectView();
         }
@@ -758,7 +840,276 @@
         );
         observer.observe(sentinel);
       }
-      // ─── PROJECT CARD ─────────────────────────────────────────────────────────────
+      // ─── UPDATES VIEW ────────────────────────────────────────────────────────────
+      function renderUpdatesView() {
+        renderToolbarUpdates();
+        updateUpdatesView();
+      }
+      function renderToolbarUpdates() {
+        const yswsOptions = [...new Set(allProjects.map((p) => (p.ysws || "").trim()).filter(Boolean))].sort();
+        document.getElementById("toolbar").innerHTML = `
+    <div class="toolbar-left">
+      <span class="toolbar-title">Updates</span>
+      ${categoryBadgeHtml()}
+    </div>
+    <select onchange="updatesMetric=this.value; updateUpdatesView()">
+      <option value="ships" ${updatesMetric === "ships" ? "selected" : ""}>Y-axis: Total Ships</option>
+      <option value="wg" ${updatesMetric === "wg" ? "selected" : ""}>Y-axis: Total WG</option>
+      <option value="ships_interval" ${updatesMetric === "ships_interval" ? "selected" : ""}>Y-axis: Ships Added per Interval</option>
+      <option value="wg_interval" ${updatesMetric === "wg_interval" ? "selected" : ""}>Y-axis: WG Added per Interval</option>
+    </select>
+    <select onchange="updatesYsws=this.value; updateUpdatesView()">
+      <option value="">All YSWSs</option>
+      ${yswsOptions.map((y) => `<option value="${esc(y)}" ${updatesYsws === y ? "selected" : ""}>${esc(y)}</option>`).join("")}
+    </select>
+    <select onchange="updatesInterval=this.value; updateUpdatesView()">
+      <option value="auto" ${updatesInterval === "auto" ? "selected" : ""}>Interval: Auto</option>
+      <option value="day" ${updatesInterval === "day" ? "selected" : ""}>Day</option>
+      <option value="week" ${updatesInterval === "week" ? "selected" : ""}>Week</option>
+      <option value="month" ${updatesInterval === "month" ? "selected" : ""}>Month</option>
+      <option value="year" ${updatesInterval === "year" ? "selected" : ""}>Year</option>
+    </select>
+    <label class="toolbar-checkbox">
+      <input type="checkbox" id="updates-alltime" ${updatesAllTime ? "checked" : ""} onchange="toggleUpdatesAllTime(this.checked)">
+      All time
+    </label>
+    <input type="date" id="updates-from" value="${updatesFrom ? tsToDateInput(updatesFrom) : ""}" ${updatesAllTime ? "disabled" : ""}
+      onchange="updatesFrom=dateInputToTs(this.value,false); updateUpdatesView()">
+    <span style="color:var(--muted);font-size:12px">to</span>
+    <input type="date" id="updates-to" value="${updatesTo ? tsToDateInput(updatesTo) : ""}" ${updatesAllTime ? "disabled" : ""}
+      onchange="updatesTo=dateInputToTs(this.value,true); updateUpdatesView()">
+    <div class="search-hint">Filters use each ship's <code>approved_at</code> date. Chart shows cumulative totals, or per-interval additions depending on the Y-axis option.</div>`;
+      }
+      function toggleUpdatesAllTime(checked) {
+        updatesAllTime = checked;
+        const fromEl = document.getElementById("updates-from");
+        const toEl = document.getElementById("updates-to");
+        if (fromEl) fromEl.disabled = checked;
+        if (toEl) toEl.disabled = checked;
+        updateUpdatesView();
+      }
+      function tsToDateInput(ts) {
+        return new Date(ts * 1000).toISOString().slice(0, 10);
+      }
+      function dateInputToTs(val, endOfDay) {
+        if (!val) return null;
+        const d = new Date(val + "T00:00:00Z");
+        if (endOfDay) d.setUTCHours(23, 59, 59, 999);
+        return Math.floor(d.getTime() / 1000);
+      }
+      function getUpdatesFilteredProjects() {
+        let list = allProjects.filter(
+          (p) => p.approved_at != null && !isNaN(Number(p.approved_at)) && Number(p.approved_at) > 0,
+        );
+        if (updatesYsws) list = list.filter((p) => (p.ysws || "").trim() === updatesYsws);
+        if (!updatesAllTime) {
+          if (updatesFrom != null) list = list.filter((p) => Number(p.approved_at) >= updatesFrom);
+          if (updatesTo != null) list = list.filter((p) => Number(p.approved_at) <= updatesTo);
+        }
+        return list.slice().sort((a, b) => Number(a.approved_at) - Number(b.approved_at));
+      }
+      function autoInterval(list) {
+        if (list.length < 2) return "month";
+        const first = Number(list[0].approved_at);
+        const last = Number(list[list.length - 1].approved_at);
+        const spanDays = (last - first) / 86400;
+        if (spanDays <= 45) return "day";
+        if (spanDays <= 270) return "week";
+        if (spanDays <= 900) return "month";
+        return "year";
+      }
+      function bucketInfo(d, interval) {
+        const y = d.getUTCFullYear();
+        if (interval === "day") {
+          const ts = Date.UTC(y, d.getUTCMonth(), d.getUTCDate());
+          const key = new Date(ts).toISOString().slice(0, 10);
+          const label = new Date(ts).toLocaleDateString(undefined, { month: "short", day: "numeric" });
+          return { key, ts, label };
+        }
+        if (interval === "week") {
+          const dow = (d.getUTCDay() + 6) % 7; // 0 = Monday
+          const ts = Date.UTC(y, d.getUTCMonth(), d.getUTCDate() - dow);
+          const key = new Date(ts).toISOString().slice(0, 10);
+          const label = new Date(ts).toLocaleDateString(undefined, { month: "short", day: "numeric" });
+          return { key, ts, label };
+        }
+        if (interval === "month") {
+          const ts = Date.UTC(y, d.getUTCMonth(), 1);
+          const key = `${y}-${String(d.getUTCMonth() + 1).padStart(2, "0")}`;
+          const label = new Date(ts).toLocaleDateString(undefined, { month: "short", year: "2-digit" });
+          return { key, ts, label };
+        }
+        // year
+        const ts = Date.UTC(y, 0, 1);
+        return { key: `${y}`, ts, label: `${y}` };
+      }
+      function computeBuckets(list, interval) {
+        const map = new Map();
+        list.forEach((p) => {
+          const d = new Date(Number(p.approved_at) * 1000);
+          const info = bucketInfo(d, interval);
+          if (!map.has(info.key)) map.set(info.key, { ships: 0, wg: 0, ts: info.ts, label: info.label });
+          const b = map.get(info.key);
+          b.ships += 1;
+          b.wg += (Number(p.hours) || 0) / 10;
+        });
+        const arr = [...map.values()].sort((a, b) => a.ts - b.ts);
+        let cumShips = 0,
+          cumWg = 0;
+        arr.forEach((b) => {
+          cumShips += b.ships;
+          cumWg += b.wg;
+          b.cumShips = cumShips;
+          b.cumWg = Math.round(cumWg * 100) / 100;
+        });
+        return arr;
+      }
+      function drawChart(buckets, metric) {
+        if (buckets.length === 0) {
+          return `<div class="state-msg"><strong>No data</strong>No ships match these filters.</div>`;
+        }
+        const metricInfo = {
+          ships: { unit: "ships", get: (b) => b.cumShips },
+          wg: { unit: "WG", get: (b) => b.cumWg },
+          ships_interval: { unit: "ships", get: (b) => b.ships },
+          wg_interval: { unit: "WG", get: (b) => b.wg },
+        };
+        const info = metricInfo[metric] || metricInfo.ships;
+        const w = 900,
+          h = 280,
+          padL = 54,
+          padR = 16,
+          padT = 16,
+          padB = 34;
+        const innerW = w - padL - padR;
+        const innerH = h - padT - padB;
+        const values = buckets.map(info.get);
+        const maxV = Math.max(...values, 1);
+        const n = buckets.length;
+        const xStep = n > 1 ? innerW / (n - 1) : 0;
+        const points = buckets.map((b, i) => {
+          const x = padL + (n > 1 ? i * xStep : innerW / 2);
+          const y = padT + innerH - (values[i] / maxV) * innerH;
+          return { x, y, b, v: values[i] };
+        });
+        const pathD = points.map((p, i) => (i === 0 ? "M" : "L") + p.x.toFixed(1) + "," + p.y.toFixed(1)).join(" ");
+        const baseY = (padT + innerH).toFixed(1);
+        const areaD = `${pathD} L${points[points.length - 1].x.toFixed(1)},${baseY} L${points[0].x.toFixed(1)},${baseY} Z`;
+        const gridCount = 4;
+        let gridLines = "";
+        for (let i = 0; i <= gridCount; i++) {
+          const gy = padT + innerH - (i / gridCount) * innerH;
+          const val = Math.round((maxV / gridCount) * i);
+          gridLines += `<line x1="${padL}" y1="${gy.toFixed(1)}" x2="${w - padR}" y2="${gy.toFixed(1)}" stroke="#eee" stroke-width="1"/>`;
+          gridLines += `<text x="${padL - 8}" y="${(gy + 4).toFixed(1)}" font-size="10" fill="#6b6b65" text-anchor="end">${val.toLocaleString()}</text>`;
+        }
+        const labelStep = Math.max(1, Math.ceil(n / 8));
+        let xLabels = "";
+        points.forEach((p, i) => {
+          if (i % labelStep === 0 || i === n - 1) {
+            xLabels += `<text x="${p.x.toFixed(1)}" y="${h - padB + 16}" font-size="10" fill="#6b6b65" text-anchor="middle">${esc(p.b.label)}</text>`;
+          }
+        });
+        const circles = points
+          .map(
+            (p) =>
+              `<g class="chart-point" data-x="${esc(p.b.label)}" data-y="${esc(p.v.toLocaleString(undefined, { maximumFractionDigits: 1 }))} ${info.unit}">
+    <circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="9" fill="transparent"/>
+    <circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="3" fill="var(--accent)"/>
+  </g>`,
+          )
+          .join("");
+        return `<svg id="updates-chart" viewBox="0 0 ${w} ${h}" width="100%" style="max-width:100%;height:auto;display:block">
+      ${gridLines}
+      <path d="${areaD}" fill="var(--accent-soft)" stroke="none"/>
+      <path d="${pathD}" fill="none" stroke="var(--accent)" stroke-width="2"/>
+      ${circles}
+      ${xLabels}
+      <line x1="${padL}" y1="${padT}" x2="${padL}" y2="${padT + innerH}" stroke="#ddd"/>
+      <line x1="${padL}" y1="${padT + innerH}" x2="${w - padR}" y2="${padT + innerH}" stroke="#ddd"/>
+    </svg>`;
+      }
+      function bindChartTooltips() {
+        const card = document.querySelector(".chart-card");
+        const svg = document.getElementById("updates-chart");
+        if (!card || !svg) return;
+        const tip = document.createElement("div");
+        tip.className = "chart-tooltip";
+        card.appendChild(tip);
+        svg.querySelectorAll(".chart-point").forEach((pt) => {
+          pt.addEventListener("mouseenter", () => {
+            tip.innerHTML = `<span>${pt.dataset.x}</span><strong>${pt.dataset.y}</strong>`;
+            tip.style.display = "block";
+          });
+          pt.addEventListener("mousemove", (e) => {
+            const r = card.getBoundingClientRect();
+            tip.style.left = e.clientX - r.left + "px";
+            tip.style.top = e.clientY - r.top + "px";
+          });
+          pt.addEventListener("mouseleave", () => {
+            tip.style.display = "none";
+          });
+        });
+      }
+      function updateUpdatesView() {
+        const list = getUpdatesFilteredProjects();
+        updatesFilteredProjects = list;
+        const interval = updatesInterval === "auto" ? autoInterval(list) : updatesInterval;
+        const buckets = computeBuckets(list, interval);
+        const chartHtml = drawChart(buckets, updatesMetric);
+        const totalWg = list.reduce((s, p) => s + (Number(p.hours) || 0), 0) / 10;
+        const main = document.getElementById("main-content");
+        main.innerHTML = `
+    <div class="stat-cards">
+      <div class="stat-card">
+        <div class="stat-label">Ships in range</div>
+        <div class="stat-value">${list.length.toLocaleString()}</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">WG in range</div>
+        <div class="stat-value">${totalWg.toLocaleString(undefined, { maximumFractionDigits: 1 })}</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Interval</div>
+        <div class="stat-value" style="font-size:16px;text-transform:capitalize">${interval}</div>
+      </div>
+    </div>
+    <div class="chart-card">${chartHtml}</div>
+    <div class="updates-list-header">Ships (${list.length.toLocaleString()})</div>
+    <div class="project-list" id="updates-project-list"></div>
+    <div id="updates-scroll-sentinel"></div>`;
+        bindChartTooltips();
+        updatesDisplayedCount = 0;
+        loadMoreUpdatesProjects();
+        setupUpdatesObserver();
+      }
+      function loadMoreUpdatesProjects() {
+        const listEl = document.getElementById("updates-project-list");
+        if (!listEl) return;
+        const end = Math.min(updatesDisplayedCount + PAGE_SIZE, updatesFilteredProjects.length);
+        for (let i = updatesDisplayedCount; i < end; i++) {
+          listEl.appendChild(makeProjectCard(updatesFilteredProjects[i]));
+        }
+        updatesDisplayedCount = end;
+        if (updatesFilteredProjects.length === 0) {
+          listEl.innerHTML = `<div class="state-msg"><strong>No ships found</strong>Try adjusting the filters.</div>`;
+        }
+      }
+      function setupUpdatesObserver() {
+        if (updatesObserver) updatesObserver.disconnect();
+        const sentinel = document.getElementById("updates-scroll-sentinel");
+        if (!sentinel) return;
+        updatesObserver = new IntersectionObserver(
+          (entries) => {
+            if (entries[0].isIntersecting && updatesDisplayedCount < updatesFilteredProjects.length) {
+              loadMoreUpdatesProjects();
+            }
+          },
+          { rootMargin: "200px" },
+        );
+        updatesObserver.observe(sentinel);
+      }
+      // ─── PROJECT CARD (shared by Projects and Updates tabs) ────────────────────────
       function makeProjectCard(p) {
         const card = document.createElement("div");
         card.className = "project-card";
