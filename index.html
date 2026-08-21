@@ -530,7 +530,7 @@
       <div class="tabs">
         <button class="tab-btn active" id="tab-ysws-btn" onclick="switchTab('ysws')">YSWSs</button>
         <button class="tab-btn" id="tab-projects-btn" onclick="switchTab('projects')">Projects</button>
-        <button class="tab-btn" id="tab-updates-btn" onclick="switchTab('updates')">Updates</button>
+        <button class="tab-btn" id="tab-updates-btn" onclick="switchTab('updates')">Graphs</button>
       </div>
     </header>
     <div class="toolbar" id="toolbar"></div>
@@ -849,7 +849,7 @@
         const yswsOptions = [...new Set(allProjects.map((p) => (p.ysws || "").trim()).filter(Boolean))].sort();
         document.getElementById("toolbar").innerHTML = `
     <div class="toolbar-left">
-      <span class="toolbar-title">Updates</span>
+      <span class="toolbar-title">Graphs</span>
       ${categoryBadgeHtml()}
     </div>
     <select onchange="updatesMetric=this.value; updateUpdatesView()">
