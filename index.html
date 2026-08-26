@@ -143,6 +143,15 @@
         white-space: nowrap;
         font-weight: 500;
       }
+      .id-badge {
+        font-size: 11px;
+        color: var(--accent);
+        background: var(--accent-soft);
+        padding: 2px 8px;
+        border-radius: 10px;
+        white-space: nowrap;
+        font-weight: 500;
+      }
       .search-wrap {
         position: relative;
         flex: 1;
@@ -411,6 +420,20 @@
         color: var(--muted);
         white-space: nowrap;
       }
+      .copy-link-btn {
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        color: var(--muted);
+        display: inline-flex;
+        align-items: center;
+        line-height: 1;
+        transition: color 0.12s;
+      }
+      .copy-link-btn:hover {
+        color: var(--accent);
+      }
       .project-desc {
         font-size: 12px;
         color: var(--muted);
@@ -558,6 +581,15 @@
         return names.length ? new Set(names) : null;
       }
       const categoryFilter = getCategoryFilter();
+      // ─── ID FILTER (from URL) ─────────────────────────────────────────────────
+      // ?id=recXXX  → restricts the dashboard to that single project.
+      function getIdFilter() {
+        const params = new URLSearchParams(window.location.search);
+        const raw = params.get("id");
+        if (!raw || !raw.trim()) return null;
+        return raw.trim();
+      }
+      const idFilter = getIdFilter();
       // ─── DATA ───────────────────────────────────────────────────────────────────
       let allProjects = [];
       let byYsws = {}; // ysws name → [projects]
@@ -594,6 +626,10 @@
           allProjects = Array.isArray(data) ? data : Object.values(data);
           if (categoryFilter) {
             allProjects = allProjects.filter((p) => categoryFilter.has((p.ysws || "").trim().toLowerCase()));
+          }
+          if (idFilter) {
+            allProjects = allProjects.filter((p) => p.id === idFilter);
+            currentTab = "projects";
           }
           buildIndex();
           renderTab();
@@ -654,6 +690,10 @@
         if (!categoryFilter) return "";
         const names = [...categoryFilter].join(", ");
         return `<span class="category-badge" title="Filtered by URL ?category=">Category: ${esc(names)}</span>`;
+      }
+      function idBadgeHtml() {
+        if (!idFilter) return "";
+        return `<span class="id-badge" title="Filtered by URL ?id=">ID: ${esc(idFilter)}</span>`;
       }
       // ─── YSWS VIEW ───────────────────────────────────────────────────────────────
       function renderYswsView() {
@@ -720,6 +760,7 @@
       <span class="toolbar-title">YSWSs</span>
       <span class="toolbar-count" id="ysws-count"></span>
       ${categoryBadgeHtml()}
+      ${idBadgeHtml()}
     </div>
     <div class="search-wrap">
       <svg class="search-icon" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6.5" cy="6.5" r="4.5"/><line x1="10.5" y1="10.5" x2="14" y2="14"/></svg>
@@ -781,6 +822,7 @@
       <span class="toolbar-title">${esc(title)}</span>
       <span class="toolbar-count" id="proj-count">…</span>
       ${categoryBadgeHtml()}
+      ${idBadgeHtml()}
     </div>
     <div class="search-wrap">
       <svg class="search-icon" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6.5" cy="6.5" r="4.5"/><line x1="10.5" y1="10.5" x2="14" y2="14"/></svg>
@@ -861,6 +903,7 @@
     <div class="toolbar-left">
       <span class="toolbar-title">Graphs</span>
       ${categoryBadgeHtml()}
+      ${idBadgeHtml()}
     </div>
     <select onchange="updatesMetric=this.value; updateUpdatesView()">
       <option value="ships" ${updatesMetric === "ships" ? "selected" : ""}>Y-axis: Total Ships</option>
@@ -1141,8 +1184,8 @@
         // info
         const info = document.createElement("div");
         info.className = "project-info";
-        info.onclick = function () {
-          console.log(p);
+        info.onclick = function (e) {
+          if (!e.target.closest("[data-link]")) console.log(p);
         };
         const name = repoName(p.code_url);
         const user = ghUser(p);
@@ -1156,7 +1199,17 @@
     <div class="project-meta-right">
       ${yswsName ? `<span class="project-ysws-badge">${esc(yswsName)}</span>` : ""}
       <span class="project-hours">${hours}h</span>
+      <button class="copy-link-btn" data-link="${esc(p.id)}" title="Copy link">
+        <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13H5a2 2 0 01-2-2V5a2 2 0 012-2h5a2 2 0 012 2v6a2 2 0 01-2 2z"/><path d="M8 9V4.5A1.5 1.5 0 019.5 3H12a1.5 1.5 0 011.5 1.5V9"/></svg>
+      </button>
     </div>`;
+        card.addEventListener("click", (e) => {
+          const btn = e.target.closest("[data-link]");
+          if (btn) {
+            e.stopPropagation();
+            copyLink(allProjects.find((x) => x.id === btn.dataset.link));
+          }
+        });
         const desc = document.createElement("div");
         desc.className = "project-desc";
         desc.title = p.description || "";
@@ -1164,8 +1217,6 @@
         const links = document.createElement("div");
         links.className = "project-links";
         links.innerHTML = buildLinks(p);
-        const footer = document.createElement("div");
-        footer.className = "project-links";
         if (p.approved_at) {
           const d = new Date(Number(p.approved_at) * 1000);
           const mm = String(d.getUTCMonth() + 1).padStart(2, "0");
@@ -1174,12 +1225,11 @@
           const approved = document.createElement("span");
           approved.className = "project-approved";
           approved.textContent = `Approved ${mm}/${dd}/${yyyy} UTC`;
-          footer.appendChild(approved);
+          links.appendChild(approved);
         }
         info.appendChild(row1);
         if (p.description) info.appendChild(desc);
         info.appendChild(links);
-        if (footer.childNodes.length) info.appendChild(footer);
         card.appendChild(imgWrap);
         card.appendChild(info);
         return card;
@@ -1208,6 +1258,25 @@
         return parts.join('<span class="sep"> · </span>');
       }
       // ─── HELPERS ─────────────────────────────────────────────────────────────────
+      function copyLink(p) {
+        if (!p || !p.id) return;
+        const url =
+          window.location.protocol +
+          "//" +
+          window.location.host +
+          window.location.pathname +
+          "?id=" +
+          encodeURIComponent(p.id);
+        navigator.clipboard.writeText(url).then(() => {
+          const btn = document.querySelector(`[data-link="${p.id}"]`);
+          if (btn) {
+            btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 8 7 12 13 4"/></svg>`;
+            setTimeout(() => {
+              btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13H5a2 2 0 01-2-2V5a2 2 0 012-2h5a2 2 0 012 2v6a2 2 0 01-2 2z"/><path d="M8 9V4.5A1.5 1.5 0 019.5 3H12a1.5 1.5 0 011.5 1.5V9"/></svg>`;
+            }, 1500);
+          }
+        });
+      }
       function repoName(url) {
         if (!url) return "Unknown";
         const m = url.replace(/\/$/, "").match(/\/([^\/]+)$/);
