@@ -440,6 +440,12 @@
         color: var(--border);
         font-size: 11px;
       }
+      .project-approved {
+        font-size: 11px;
+        color: var(--muted);
+        margin-left: auto;
+        white-space: nowrap;
+      }
       /* CHART (Updates tab) */
       .chart-card {
         background: var(--surface);
@@ -1154,9 +1160,22 @@
         const links = document.createElement("div");
         links.className = "project-links";
         links.innerHTML = buildLinks(p);
+        const footer = document.createElement("div");
+        footer.className = "project-links";
+        if (p.approved_at) {
+          const d = new Date(Number(p.approved_at) * 1000);
+          const mm = String(d.getUTCMonth() + 1).padStart(2, "0");
+          const dd = String(d.getUTCDate()).padStart(2, "0");
+          const yyyy = d.getUTCFullYear();
+          const approved = document.createElement("span");
+          approved.className = "project-approved";
+          approved.textContent = `Approved ${mm}/${dd}/${yyyy} UTC`;
+          footer.appendChild(approved);
+        }
         info.appendChild(row1);
         if (p.description) info.appendChild(desc);
         info.appendChild(links);
+        if (footer.childNodes.length) info.appendChild(footer);
         card.appendChild(imgWrap);
         card.appendChild(info);
         return card;
