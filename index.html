@@ -791,6 +791,8 @@
       <option value="">Sort: Default</option>
       <option value="hours_desc" ${projSort.field === "hours" && projSort.dir === -1 ? "selected" : ""}>Hours: High → Low</option>
       <option value="hours_asc" ${projSort.field === "hours" && projSort.dir === 1 ? "selected" : ""}>Hours: Low → High</option>
+      <option value="approved_at_desc" ${projSort.field === "approved_at" && projSort.dir === -1 ? "selected" : ""}>Approved: Newest First</option>
+      <option value="approved_at_asc" ${projSort.field === "approved_at" && projSort.dir === 1 ? "selected" : ""}>Approved: Oldest First</option>
     </select>
     <div class="search-hint">Tip: <code>user:someuser</code> &nbsp; <code>desc:rust</code> &nbsp; <code>hours:&gt;20</code></div>`;
       }
@@ -803,7 +805,9 @@
         if (!val) {
           projSort = { field: null, dir: -1 };
         } else if (val === "hours_desc") projSort = { field: "hours", dir: -1 };
-        else projSort = { field: "hours", dir: 1 };
+        else if (val === "hours_asc") projSort = { field: "hours", dir: 1 };
+        else if (val === "approved_at_desc") projSort = { field: "approved_at", dir: -1 };
+        else if (val === "approved_at_asc") projSort = { field: "approved_at", dir: 1 };
         updateProjectList();
       }
       function getFilteredProjects() {
