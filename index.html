@@ -61,6 +61,11 @@
       .logo span {
         color: var(--accent);
       }
+      /* VERSION PICKER */
+      .version-select {
+        margin-left: auto;
+        max-width: 240px;
+      }
       /* TABS */
       .tabs {
         display: flex;
@@ -541,6 +546,9 @@
         header {
           gap: 14px;
         }
+        .version-select {
+          max-width: 120px;
+        }
         main {
           padding: 12px;
         }
@@ -567,6 +575,9 @@
         <button class="tab-btn" id="tab-projects-btn" onclick="switchTab('projects')">Projects</button>
         <button class="tab-btn" id="tab-updates-btn" onclick="switchTab('updates')">Graphs</button>
       </div>
+      <select class="version-select" id="version-select" onchange="onVersionChange(this.value)" disabled>
+        <option value="">Loading versions…</option>
+      </select>
     </header>
     <div class="toolbar" id="toolbar"></div>
     <main id="main-content">
@@ -596,6 +607,15 @@
         return raw.trim();
       }
       const idFilter = getIdFilter();
+      // ─── VERSION FILTER (from URL) ─────────────────────────────────────────────
+      // ?unified_version=<commit hash>  → pulls ysws_entries.json from that git commit.
+      function getUnifiedVersion() {
+        const params = new URLSearchParams(window.location.search);
+        const raw = params.get("unified_version");
+        if (!raw || !raw.trim()) return null;
+        return raw.trim();
+      }
+      const unifiedVersionParam = getUnifiedVersion();
       // ─── DATA ───────────────────────────────────────────────────────────────────
       let allProjects = [];
       let byYsws = {}; // ysws name → [projects]
@@ -623,28 +643,110 @@
       let updatesDisplayedCount = 0;
       let updatesObserver = null;
       // ─── LOAD ────────────────────────────────────────────────────────────────────
-      fetch("ysws_entries.json")
-        .then((r) => {
-          if (!r.ok) throw new Error(r.status);
-          return r.json();
-        })
-        .then((data) => {
-          allProjects = Array.isArray(data) ? data : Object.values(data);
-          if (categoryFilter) {
-            allProjects = allProjects.filter((p) => categoryFilter.has((p.ysws || "").trim().toLowerCase()));
-          }
-          if (idFilter) {
-            allProjects = allProjects.filter((p) => p.id === idFilter);
-            currentTab = "projects";
-          }
-          buildIndex();
-          renderTab();
-        })
-        .catch((err) => {
-          document.getElementById("main-content").innerHTML =
-            `<div class="state-msg"><strong>Could not load ysws_entries.json</strong>Make sure the file is in the same folder as this HTML file.<br><small style="font-family:monospace;color:#aaa">${err}</small></div>`;
-          document.getElementById("toolbar").innerHTML = "";
+      const REPO = "tiredkangaroo/ysws-overview";
+      const GITHUB_API = "https://api.github.com/repos/" + REPO;
+      const CORS_PROXY = "https://cors-proxy.mechanicaldinosaurs.net/?url=";
+      const VERSION_CUTOFF = new Date("2026-07-21T00:00:00Z").getTime();
+      let availableVersions = []; // [{hash, dateLabel}]
+      let selectedVersionHash = unifiedVersionParam;
+
+      function formatVersionDate(iso) {
+        const d = new Date(iso);
+        const s = d.toLocaleString("en-US", {
+          timeZone: "America/New_York",
+          month: "long",
+          day: "numeric",
+          year: "numeric",
+          hour: "numeric",
+          minute: "2-digit",
+          timeZoneName: "short",
         });
+        return s.replace(/ at /g, " ");
+      }
+
+      function fetchVersions() {
+        const sel = document.getElementById("version-select");
+        const versions = [];
+        function fetchPage(page) {
+          return fetch(GITHUB_API + `/commits?path=ysws_entries.json&per_page=100&page=${page}`)
+            .then((r) => {
+              if (!r.ok) throw new Error(r.status);
+              const link = r.headers.get("Link") || "";
+              return r.json().then((commits) => ({ commits, hasNext: /rel="next"/.test(link) }));
+            })
+            .then(({ commits, hasNext }) => {
+              commits.forEach((c) => {
+                if (new Date(c.commit.author.date).getTime() >= VERSION_CUTOFF) {
+                  versions.push({ hash: c.sha, dateLabel: formatVersionDate(c.commit.author.date) });
+                }
+              });
+              if (hasNext && commits.length > 0) return fetchPage(page + 1);
+            });
+        }
+        return fetchPage(1)
+          .then(() => {
+            availableVersions = versions;
+            if (sel) {
+              let options = `<option value="">Latest</option>`;
+              options += availableVersions
+                .map((v) => `<option value="${esc(v.hash)}">${esc(v.dateLabel)}</option>`)
+                .join("");
+              sel.innerHTML = options;
+              if (selectedVersionHash) sel.value = selectedVersionHash;
+              sel.disabled = false;
+            }
+          })
+          .catch(() => {
+            if (sel) {
+              sel.innerHTML = `<option value="">Latest</option>`;
+              sel.disabled = false;
+            }
+          });
+      }
+
+      function loadData() {
+        const version = selectedVersionHash;
+        const url = version
+          ? CORS_PROXY + encodeURIComponent(`https://github.com/${REPO}/raw/${version}/ysws_entries.json`)
+          : "ysws_entries.json";
+        return fetch(url)
+          .then((r) => {
+            if (!r.ok) throw new Error(r.status);
+            return r.json();
+          })
+          .then((data) => {
+            allProjects = Array.isArray(data) ? data : Object.values(data);
+            if (categoryFilter) {
+              allProjects = allProjects.filter((p) => categoryFilter.has((p.ysws || "").trim().toLowerCase()));
+            }
+            if (idFilter) {
+              allProjects = allProjects.filter((p) => p.id === idFilter);
+              currentTab = "projects";
+            }
+            buildIndex();
+            renderTab();
+          })
+          .catch((err) => {
+            document.getElementById("main-content").innerHTML =
+              `<div class="state-msg"><strong>Could not load ysws_entries.json</strong>Make sure the file is in the same folder as this HTML file.<br><small style="font-family:monospace;color:#aaa">${err}</small></div>`;
+            document.getElementById("toolbar").innerHTML = "";
+          });
+      }
+
+      loadData();
+      fetchVersions();
+
+      function onVersionChange(hash) {
+        selectedVersionHash = hash || null;
+        // Update query param without reloading
+        const url = new URL(window.location);
+        if (hash) url.searchParams.set("unified_version", hash);
+        else url.searchParams.delete("unified_version");
+        history.replaceState({}, "", url);
+        document.getElementById("main-content").innerHTML =
+          `<div class="state-msg"><strong>Loading…</strong>Fetching ysws_entries.json</div>`;
+        loadData();
+      }
       function buildIndex() {
         byYsws = {};
         allProjects.forEach((p) => {
